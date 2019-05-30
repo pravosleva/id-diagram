@@ -24,11 +24,12 @@
     "url": "git+https://github.com/pravosleva/id-diagram.git"
   },
   "keywords": [
-    "boilerplate",
-    "npm",
-    "module",
-    "node",
-    "javascript"
+    "id",
+    "diagram",
+    "hvac",
+    "молье",
+    "влажный",
+    "воздух"
   ],
   "author": "Den Pol <selection4test@gmail.com>",
   "license": "MIT",
