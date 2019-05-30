@@ -4,17 +4,16 @@
 
 Теоретическая база & уравнения кривых по точкам
 
-- [x] ID.getHumidityByParams0 by `{ temperature, barometricPressure = 101.325, fi }`
-- [x] ID.getTemperatureByParams0 by `{ enthalpy, humidity }`
-- [x] ID.getHumidityByParams1 by `{ enthalpy, temperature }`
-- [x] ID.getEnthalpyLines (Массив линейных функций в аналит. виде `h => k*t+b`) 54 pcs from -18 to 88 kJ/kg by step 2
-- [ ] ID.getHumidityLines (Массив квадратичных функций в аналит. виде `h => a*t^2+b*t`) from 10 to 100 % (от этого нет пользы, т.к. при тестировании выявлена высокая погрешность, если использовать зависимости, полученные методом наименьших квадратов)
+- [x] Formulas.getHumidityByParams0 by `{ temperature, barometricPressure = 101.325, fi }`
+- [x] Formulas.getTemperatureByParams0 by `{ enthalpy, humidity }`
+- [x] Formulas.getHumidityByParams1 by `{ enthalpy, temperature }`
+- [x] Formulas.getEnthalpyLines (Массив линейных функций в аналит. виде `h => k*t+b`) 54 pcs from -18 to 88 kJ/kg by step 2
+- [ ] Formulas.getHumidityLines (Массив квадратичных функций в аналит. виде `h => a*t^2+b*t`) from 10 to 100 % (от этого нет пользы, т.к. при тестировании выявлена высокая погрешность, если использовать зависимости, полученные методом наименьших квадратов)
 
 ## TODO: STEP 2
 
 Нахождение пересечений между найденными линиями для произвольной точки и кривой насыщения (fi === 100 %)
-
-Для этого нужно решить математическую задачу:
+_Для этого нужно решить математическую задачу:_
 - [x] 1. Дан массив линейных нункций `Lines.getEnthalpyLines()`.
 - [ ] 2. Между двумя прямыми постоянных энтальпий уравнение **прямой**, параллельной остальным прямым и проходящую через **точку** `d=Formulas.getHumidityByParams0({ t, fi })` (d as x axis) и `t` (t as y axis) для данной точки `{ t, fi }`.
 - [ ] 3. Есть массив точек кривой насыщения `fi=100%`. _Думаю, что делать дальше..._
