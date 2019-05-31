@@ -1,6 +1,6 @@
 {
   "name": "id-diagram",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "id-diagram methods",
   "main": "./lib/index.js",
   "scripts": {
