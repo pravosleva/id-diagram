@@ -1,6 +1,6 @@
 {
   "name": "id-diagram",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "id-diagram methods",
   "main": "./lib/index.js",
   "scripts": {
@@ -27,6 +27,7 @@
     "id",
     "diagram",
     "hvac",
+    "диаграмма",
     "молье",
     "влажный",
     "воздух"

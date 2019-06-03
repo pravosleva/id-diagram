@@ -137,4 +137,23 @@ export default class Lines {
 
     return [...coeffsArr].map(({ k, b }) => h => ((k * h) + b));
   }
+
+  // ЭНТАЛЬПИЯ: ЛИНИЯ, ПРОХОДЯЩАЯ ЧЕРЕЗ ТОЧКУ { t, fi }
+  // ENTHALPY: LINE FOR THE { t, fi }
+  static getEnthalpyLine({ t, fi }) {
+    const d = Formulas.getHumidityByParams0({ t, fi });
+
+    // Берем произвольную линию
+    const enthalpyLine = Lines.getEnthalpyLines()[4];
+    const x1 = 1;
+    const x2 = 5;
+    const y1 = enthalpyLine(x1);
+    const y2 = enthalpyLine(x2);
+    const { k } = getKB({ x1, y1, x2, y2 });
+    // b = y - (k * x);
+
+    const userB = t - (k * d);
+
+    return h => (k * h) + userB;
+  }
 }

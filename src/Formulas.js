@@ -1,4 +1,5 @@
 /* eslint-disable padded-blocks, space-before-blocks, max-len, no-mixed-operators, no-shadow, object-curly-newline, no-plusplus */
+import Lines from './Lines';
 
 export default class Formulas {
 
@@ -37,5 +38,17 @@ export default class Formulas {
   }){
     // console.log((enthalpy - (1.006 * temperature)) * 1000 / (2501 + (1.805 * temperature)));
     return (enthalpy - (1.006 * temperature)) * 1000 / (2501 + (1.805 * temperature));
+  }
+
+  // ЭНТАЛЬПИЯ, кДж/кг
+  // ENTHALPY, kJ/kg
+  static getEnthalpyByParams0({
+    t, // C
+    fi, // %
+  }){
+    const enthalpyLine = Lines.getEnthalpyLine({ t, fi });
+    const d = Formulas.getHumidityByParams0({ t, fi });
+
+    return enthalpyLine(d);
   }
 }

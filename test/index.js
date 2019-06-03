@@ -1,5 +1,6 @@
 import { assert } from 'chai';
 // import Immutable from 'immutable';
+import { getKB } from 'interpolate-by-pravosleva';
 
 import { Formulas, Lines } from '../src';
 
@@ -21,7 +22,7 @@ describe('Awesome test.', () => {
   //   assert(testedObj.equals(expectedObj), `Named awesome :( testedObj is ${JSON.stringify(testedObj)}`);
   // });
 
-  it('Lines.getEnthalpyLines\ni= -16 kJ/kg; d= 5 g/kg', () => {
+  it('1.1. Lines.getEnthalpyLines\ni= -16 kJ/kg; d= 5 g/kg', () => {
     const expectedEnthalpyVal = -11.026566844919786;
     const testedFns = Lines.getEnthalpyLines();
     const testHumidity = 5;
@@ -30,7 +31,7 @@ describe('Awesome test.', () => {
     assert(testedVal === expectedEnthalpyVal, `Named awesome :( testedVal(${testHumidity}) is ${testedVal}`);
   });
 
-  it('Lines.getEnthalpyLines\ni= 88 kJ/kg; d= 15 g/kg', () => {
+  it('1.2. Lines.getEnthalpyLines\ni= 88 kJ/kg; d= 15 g/kg', () => {
     const expectedEnthalpyVal = 1.5158924205378952;
     const testedFns = Lines.getEnthalpyLines();
     const testHumidity = 15;
@@ -70,7 +71,7 @@ describe('Awesome test.', () => {
   //   );
   // });
 
-  it('Formulas.getHumidityByParams0', () => {
+  it('2.1. Formulas.getHumidityByParams0', () => {
     const expectedEnthalpyVal = 2.6474274931774056;
     const testedVal = Formulas.getHumidityByParams0({
       t: 12.310041624590525,
@@ -80,7 +81,7 @@ describe('Awesome test.', () => {
     assert(testedVal === expectedEnthalpyVal, `Named awesome :( testedVal is ${testedVal}`);
   });
 
-  it('Formulas.getHumidityByParams1', () => {
+  it('2.2. Formulas.getHumidityByParams1', () => {
     const expectedEnthalpyVal = 5.000000000000001;
     const testedVal = Formulas.getHumidityByParams1({
       e: 25,
@@ -90,7 +91,7 @@ describe('Awesome test.', () => {
     assert(testedVal === expectedEnthalpyVal, `Named awesome :( testedVal is ${testedVal}`);
   });
 
-  it('Formulas.getTemperatureByParams0', () => {
+  it('2.3. Formulas.getTemperatureByParams0', () => {
     const expectedEnthalpyVal = 12.310041624590525;
     const testedVal = Formulas.getTemperatureByParams0({
       e: 25,
@@ -98,5 +99,44 @@ describe('Awesome test.', () => {
     });
 
     assert(testedVal === expectedEnthalpyVal, `Named awesome :( testedVal is ${testedVal}`);
+  });
+
+  it('3.1. userB coeff', () => {
+    const t = 25;
+    const fi = 20;
+    const d = Formulas.getHumidityByParams0({ t, fi });
+
+    const enthalpyLine = Lines.getEnthalpyLines()[4];
+    const x1 = 1;
+    const x2 = 5;
+    const y1 = enthalpyLine(x1);
+    const y2 = enthalpyLine(x2);
+    const { k, b } = getKB({ x1, y1, x2, y2 });
+    // b = y - (k * x);
+
+    const userB = t - (k * d);
+    const testedT = (k * d) + userB;
+
+    assert(testedT.toFixed(2) === t.toFixed(2), `Named awesome :( testedT is ${testedT}; Should be ${t}`);
+  });
+
+  it('3.2. Lines.getEnthalpyLine', () => {
+    const t = -41;
+    const fi = 50;
+    const enthalpyLine = Lines.getEnthalpyLine({ t, fi });
+    const d = Formulas.getHumidityByParams0({ t, fi });
+    const testedT = enthalpyLine(d);
+
+    assert(testedT.toFixed(2) === t.toFixed(2), `Named awesome :( testedT is ${testedT}; Should be ${t}`);
+  });
+
+  it('4.1. Formulas.getEnthalpyByParams0', () => {
+    const t = -41;
+    const fi = 50;
+    const enthalpy = Formulas.getEnthalpyByParams0({ t, fi });
+    const humidity = Formulas.getHumidityByParams1({ e: enthalpy, t });
+    const testedT = Formulas.getTemperatureByParams0({ e: enthalpy, h: humidity });
+
+    assert(testedT.toFixed(2) === t.toFixed(2), `Named awesome :( testedT is ${testedT}; Should be ${t}`);
   });
 });

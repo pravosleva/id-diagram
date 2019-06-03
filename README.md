@@ -8,24 +8,26 @@
 - [x] `Formulas.getTemperatureByParams0` by `{ e, h }`
 - [x] `Formulas.getHumidityByParams1` by `{ e, t }`
 - [x] `Formulas.getEnthalpyLines` (Массив линейных функций в аналит. виде `h=>k*t+b`) 54 pcs from -18 to 88 kJ/kg by step 2
-- [ ] `Formulas.getHumidityLines` (Массив квадратичных функций в аналит. виде `h=>a*t^2+b*t`) from 10 to 100 % - неприменимо, т.к. при тестировании выявлена высокая погрешность, если использовать зависимости, полученные методом наименьших квадратов)
-- [ ] `Formulas.getEnthalpyByParams0` by `{ t, fi }` by approximation between lines.
-- [ ] `Lines.getEnthalpyLine` by `({ e })`
+- [ ] `Formulas.getHumidityLines` (Массив квадратичных функций в аналит. виде `h=>a*t^2+b*t`) from 10 to 100 %.
+Неприменимо, т.к. при тестировании выявлена высокая погрешность, если использовать зависимости, полученные методом наименьших квадратов.
+- [x] `Lines.getEnthalpyLine` by `({ t, fi })`. Линия постоянной энтальпии (см. пункт 3).
+- [x] `Formulas.getEnthalpyByParams0` by `{ t, fi }`
 
-## TODO: STEP 2. Search Wet Bulb Temperature.
+## TODO: STEP 2. Wet Bulb Temperature.
 
 Нахождение мемпературы мокрого термометра. _Для этого нужно решить математическую задачу:_
 - [x] 1. Дан массив линейных функций
 ```javascript
-const enthalpyLines = Lines.getEnthalpyLines(); // (1.1)
+// (1.1)
+const enthalpyLines = Lines.getEnthalpyLines();
 ```
-- [ ] 2. Исходные данные для расчета температуры мокрого термометра.
+- [x] 2. Исходные данные для расчета температуры мокрого термометра.
 ```javascript
 // Data from user (2.1)
 const t = 35;
 const fi = 50;
 ```
-- [ ] 3. Найти уравнение **прямой** (3.1), параллельной прямым постоянных энтальпий (1.1) и проходящую через **точку** (2.1):
+- [x] 3. Найти уравнение **прямой** (3.1), параллельной прямым постоянных энтальпий (1.1) и проходящую через **точку** (2.1):
 ```
 y      |      o     .       o
        |       o    [x]      o
@@ -38,18 +40,16 @@ y      |      o     .       o
                                           x
 ```
 ```javascript
-// Линия 3.1 постоянной энтальпии, проходящая через точку пользователя
-const userEnthalpy = Formulas.getEnthalpyByParams0({ t, fi });
-// TODO: { k, b } could be found Interpolate.getKB() method for other parallel lines
-const userEnthalpyLine = Lines.getEnthalpyLine({ e });
+// Линия (3.1) постоянной энтальпии, проходящая через точку пользователя
+const enthalpyLine = Lines.getEnthalpyLine({ t, fi });
 
-// Координаты точки 2.1
-// Влагосодержание как значение по оси x
+// Координаты точки (2.1)
+// Влагосодержание d как значение по оси x
 const x = Formulas.getHumidityByParams0({ t, fi });
 // Температура как значение по оси y - известно из пункта 2.
 const y = t;
 ```
-- [ ] 4. Есть массив точек кривой насыщения `fi=100%`:
+- [x] 4. Есть массив точек кривой насыщения `fi=100%`:
 ```
 y      |                                  o
        |                     o
@@ -67,25 +67,36 @@ const pointsFi100 = Points.getHumidityPoints()[9]; // Like [{ x, y }]
 // Для диапазона температур -41 до 41 с шагом 1
 // TODO: Усовершенствовать функцию
 ```
-_Думаю, что делать дальше..._
-- [ ] 5. `getCommonPoint({ x1, y1, x2, y2, x3, y4, x4, y4 })`. Search tWB (wet bulb point) by `{ t, fi }` when i= const.
+- [ ] 5. Search tWB (wet bulb point) by `{ t, fi }` when i= const.
 Найти пересечение прямой 3.1 и кривой насыщения из пункта 4.
 ```
 y      |            x                     o
-       |             x       o
-tWB= ? |              x
+y= t   |            [x]      o
+tWB= ? |             [x]
        |         o     x
        |     o          x
        |  o              x
        |o                 x
        ------------------------------------
-                                          x
+                     x= d                 x
+                      dWB= ?
 ```
 ```javascript
-// TODO: const tWB = getCommonPoint();
-```
+// We already have enthalpyLine like h => (k * h) + b;
+// And also we have Formulas.getEnthalpyByParams0({ t, fi }) method
 
-## TODO: STEP 3. Processes.
+// TODO:
+// 1) Разбить абсциссы под кривой насыщения на промежутки;
+// 2) Определить промежуток, рименив для каждого промежутка enthalpyLine (либо другой метод)
+// 3) хз, в процессе пока...
+```
+_To be continued..._
+
+## TODO: STEP 3. Doc.
+
+- [ ] Сделать нормальную доку по методам.
+
+## TODO: STEP 4. Processes.
 
 Вычисление термодинамических процессов.
 - [ ] `class TDPoint` как отдельная сущность
@@ -94,8 +105,6 @@ tWB= ? |              x
 - [ ] Адиабатическое охлаждение
 - [ ] Пароувлажнение
 - [ ] _Прочие процессы..._
-
-_To be continued..._
 
 ## Usage
 
@@ -126,7 +135,10 @@ const t0 = Formulas.getTemperatureByParams0({
 
 console.log(t0);
 // 12.310041624590525
+
+// Something else...
 ```
+_To be continued..._
 
 ## Commands
 - `npm run clean` - Remove `lib/` directory
