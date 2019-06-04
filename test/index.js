@@ -1,8 +1,8 @@
 import { assert } from 'chai';
-// import Immutable from 'immutable';
+import Immutable from 'immutable';
 import { getKB } from 'interpolate-by-pravosleva';
 
-import { Formulas, Lines } from '../src';
+import { Formulas, Lines, Points } from '../src';
 
 describe('Awesome test.', () => {
   // it('should test default awesome function', () => {
@@ -138,5 +138,126 @@ describe('Awesome test.', () => {
     const testedT = Formulas.getTemperatureByParams0({ e: enthalpy, h: humidity });
 
     assert(testedT.toFixed(2) === t.toFixed(2), `Named awesome :( testedT is ${testedT}; Should be ${t}`);
+  });
+
+  it('4.2. Points.getHValues', () => {
+    const t = -41;
+    const fi = 50;
+    const hValues = Points.getHValues();
+    const expectedObj = Immutable.List([
+      0.07007710725563997,
+      0.0785592029140801,
+      0.08797924408173158,
+      0.09843090770967834,
+      0.11001619358421441,
+      0.12284606858671178,
+      0.13704115317769494,
+      0.15273245236991417,
+      0.17006213355589359,
+      0.18918435366145067,
+      0.2102661382086342,
+      0.2334883149901159,
+      0.25904650518306077,
+      0.28715217486480776,
+      0.3180337500363144,
+      0.35193779841342376,
+      0.3891302814118878,
+      0.42989787993121437,
+      0.4745493977364554,
+      0.52341724644788,
+      0.5768590163782246,
+      0.6352591377082106,
+      0.6990306367659711,
+      0.7686169924779105,
+      0.8444940983907006,
+      0.9271723360303464,
+      1.0171987657687929,
+      1.1151594418160768,
+      1.2216818584519133,
+      1.3374375351607373,
+      1.463144748945304,
+      1.599571422773412,
+      1.747538179868573,
+      1.9079215743978324,
+      2.0816575100490744,
+      2.2697448590377944,
+      2.473249295252825,
+      2.693307356556901,
+      2.9311307527179835,
+      3.188010937080169,
+      3.4653239619100726,
+      3.7645356394003158,
+      4.050189774041156,
+      4.354973689056322,
+      4.6800018728214745,
+      5.0264452009967355,
+      5.395533570737754,
+      5.7885586770223165,
+      6.2068769421233565,
+      6.651912610311671,
+      7.125161021028369,
+      7.628192075039576,
+      8.16265390948637,
+      8.730276799285697,
+      9.33287730403888,
+      9.972362681481155,
+      10.650735590578813,
+      11.370099109672843,
+      12.132662097605248,
+      12.940744928576219,
+      13.796785634600349,
+      14.703346492895967,
+      15.663121099397618,
+      16.67894197387617,
+      17.75378874694217,
+      18.890796984559262,
+      20.093267711681875,
+      21.364677703339563,
+      22.708690619018434,
+      24.12916906465225,
+      25.630187676062526,
+      27.216047328432374,
+      28.891290588537505,
+      30.66071854019654,
+      32.529409128980824,
+      34.50273718991944,
+      36.586396342075474,
+      38.78642295683693,
+      41.10922243301185,
+      43.5615980418674,
+      46.150782639739546,
+      48.88447358549566,
+      51.77087124584378
+    ]);
+    const testedObj = Immutable.List(hValues);
+
+    assert(testedObj.equals(expectedObj), `Named awesome :( testedObj is ${JSON.stringify(testedObj)}; Should be ${expectedObj}`);
+  });
+
+  it('4.3. Lines.getBrokenLineByPoints', () => {
+    const line = Lines.getBrokenLineByPoints([
+      { x: 0, y: 1 },
+      { x: 1, y: 2 }
+    ]);
+    const expectedVal = 0.5;
+    const testedVal = line(-0.5);
+
+    assert(expectedVal === testedVal, `Named awesome :( testedVal is ${testedVal}; Should be ${expectedVal}`);
+  });
+
+  it('4.4. Points.getCommonPoint', () => {
+    const t = 28;
+    const fi = 40;
+    const enthalpyLine = Lines.getEnthalpyLine({ t, fi });
+    const pointsFi100 = Points.getHumidityPoints()[9];
+
+    const point = Points.getCommonPoint({
+      fn1: enthalpyLine,
+      fn2: Lines.getBrokenLineByPoints(pointsFi100)
+    });
+    const expectedObj = Immutable.Map({ x: 0, y: 0 });
+    const testedObj = Immutable.Map(point);
+
+    assert(expectedObj.equals(testedObj), `Named awesome :( testedObj is ${JSON.stringify(point)}; Should be ${JSON.stringify(expectedObj)}`);
   });
 });

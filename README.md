@@ -1,5 +1,39 @@
 # id-diagram
 
+## Usage
+
+```javascript
+import { Formulas, Points, Lines } from 'id-diagram';
+
+const d0 = Formulas.getHumidityByParams0({
+  t: 15, // temperature (C)
+  fi: 10, // relativities (%)
+  barometricPressure: 101.325, // BP (kPa), optional param= 101.325 by default
+}); // (g/kg of dry air)
+
+console.log(d0);
+// 1.048908791886
+
+const d1 = Formulas.getHumidityByParams1({
+  e: 25, // enthalpy (kJ/kg)
+  t: 12.310041624590525, // temperature (C)
+}); // (g/kg of dry air)
+
+console.log(d1);
+// 5.000000000000001
+
+const t0 = Formulas.getTemperatureByParams0({
+  e: 25, // enthalpy (kJ/kg)
+  h: 5, // humidity (g/kg of dry air)
+}); // (C)
+
+console.log(t0);
+// 12.310041624590525
+
+// Something else...
+```
+_To be continued..._
+
 ## TODO: STEP 1. Basis.
 
 Теоретическая база & уравнения кривых по точкам
@@ -7,8 +41,8 @@
 - [x] `Formulas.getHumidityByParams0` by `{ t, barometricPressure = 101.325, fi }`
 - [x] `Formulas.getTemperatureByParams0` by `{ e, h }`
 - [x] `Formulas.getHumidityByParams1` by `{ e, t }`
-- [x] `Formulas.getEnthalpyLines` (Массив линейных функций в аналит. виде `h=>k*t+b`) 54 pcs from -18 to 88 kJ/kg by step 2
-- [ ] `Formulas.getHumidityLines` (Массив квадратичных функций в аналит. виде `h=>a*t^2+b*t`) from 10 to 100 %.
+- [x] `Lines.getEnthalpyLines` (Массив линейных функций в аналит. виде `h=>k*h+b`) 54 pcs from -18 to 88 kJ/kg by step 2
+- [ ] `Lines.getHumidityLines` (Массив квадратичных функций в аналит. виде `h=>a*h^2+b*t`) from 10 to 100 %.
 Неприменимо, т.к. при тестировании выявлена высокая погрешность, если использовать зависимости, полученные методом наименьших квадратов.
 - [x] `Lines.getEnthalpyLine` by `({ t, fi })`. Линия постоянной энтальпии (см. пункт 3).
 - [x] `Formulas.getEnthalpyByParams0` by `{ t, fi }`
@@ -44,7 +78,7 @@ y      |      o     .       o
 const enthalpyLine = Lines.getEnthalpyLine({ t, fi });
 
 // Координаты точки (2.1)
-// Влагосодержание d как значение по оси x
+// Влагосодержание h как значение по оси x
 const x = Formulas.getHumidityByParams0({ t, fi });
 // Температура как значение по оси y - известно из пункта 2.
 const y = t;
@@ -68,7 +102,7 @@ const pointsFi100 = Points.getHumidityPoints()[9]; // Like [{ x, y }]
 // TODO: Усовершенствовать функцию
 ```
 - [ ] 5. Search tWB (wet bulb point) by `{ t, fi }` when i= const.
-Найти пересечение прямой 3.1 и кривой насыщения из пункта 4.
+Найти пересечение прямой (3.1) и кривой насыщения.
 ```
 y      |            x                     o
 y= t   |            [x]      o
@@ -78,17 +112,21 @@ tWB= ? |             [x]
        |  o              x
        |o                 x
        ------------------------------------
-                     x= d                 x
+                     x= h                 x
                       dWB= ?
 ```
 ```javascript
-// We already have enthalpyLine like h => (k * h) + b;
-// And also we have Formulas.getEnthalpyByParams0({ t, fi }) method
-
 // TODO:
-// 1) Разбить абсциссы под кривой насыщения на промежутки;
-// 2) Определить промежуток, рименив для каждого промежутка enthalpyLine (либо другой метод)
-// 3) хз, в процессе пока...
+// 1) Определить зависимость для кривой насыщения
+// (5.1)
+const lineFi100 = Lines.getBrokenLineByPoints(pointsFi100); // Like h => val
+
+// 2) Найти пересечение кривой насыщения (5.1) с линией (3.1) постоянной энтальпии
+// const commonPoint = Poins.getCommonPoint({
+//   fn1: enthalpyLine,
+//   fn2: lineFi100
+// });
+// // TODO: Does not work yet...
 ```
 _To be continued..._
 
@@ -105,40 +143,6 @@ _To be continued..._
 - [ ] Адиабатическое охлаждение
 - [ ] Пароувлажнение
 - [ ] _Прочие процессы..._
-
-## Usage
-
-```javascript
-import { Formulas, Points, Lines } from 'id-diagram';
-
-const d0 = Formulas.getHumidityByParams0({
-  t: 15, // temperature (C)
-  fi: 10, // relativities (%)
-  barometricPressure: 101.325, // BP (kPa), optional param= 101.325 by default
-}); // (g/kg of dry air)
-
-console.log(d0);
-// 1.048908791886
-
-const d1 = Formulas.getHumidityByParams1({
-  e: 25, // enthalpy (kJ/kg)
-  t: 12.310041624590525, // temperature (C)
-}); // (g/kg of dry air)
-
-console.log(d1);
-// 5.000000000000001
-
-const t0 = Formulas.getTemperatureByParams0({
-  e: 25, // enthalpy (kJ/kg)
-  h: 5, // humidity (g/kg of dry air)
-}); // (C)
-
-console.log(t0);
-// 12.310041624590525
-
-// Something else...
-```
-_To be continued..._
 
 ## Commands
 - `npm run clean` - Remove `lib/` directory

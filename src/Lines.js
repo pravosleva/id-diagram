@@ -3,7 +3,7 @@ import {
   // byLeastSquaresApproximation,
   by3Points,
 } from 'get-parabola';
-import { getKB } from 'interpolate-by-pravosleva';
+import { getKB, linear } from 'interpolate-by-pravosleva';
 
 import {
   enthalpy,
@@ -155,5 +155,56 @@ export default class Lines {
     const userB = t - (k * d);
 
     return h => (k * h) + userB;
+  }
+
+  static getBrokenLineByPoints(points) {
+    const xs = [];
+    const ys = [];
+
+    for (let i = 0; i < points.length; i++) {
+      xs.push(points[i].x);
+      ys.push(points[i].y);
+    }
+
+    return (h) => {
+      let x1;
+      let x2;
+      let y1;
+      let y2;
+
+      for (let i = 0; i < points.length; i++) {
+        if (i > 0 && i < (points.length - 1)) {
+          // 1.
+          if (
+            (h < points[i].x)
+            && (h < points[i + 1].x)
+          ) {
+            x1 = points[0].x;
+            x2 = points[1].x;
+            y1 = points[0].y;
+            y2 = points[1].y;
+            break;
+          } else if (
+            (h < points[i].x)
+            && (h > points[i + 1].x)
+          ) {
+            x1 = points[i].x;
+            x2 = points[i + 1].x;
+            y1 = points[i].y;
+            y2 = points[i + 1].y;
+            break;
+          }
+        } else {
+          // 2. Last iteration
+          x1 = points[points.length - 2].x;
+          x2 = points[points.length - 1].x;
+          y1 = points[points.length - 2].y;
+          y2 = points[points.length - 1].y;
+          break;
+        }
+      }
+
+      return linear({ x: h, x1, y1, x2, y2 });
+    };
   }
 }
