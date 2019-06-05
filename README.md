@@ -46,6 +46,8 @@ _To be continued..._
 Неприменимо, т.к. при тестировании выявлена высокая погрешность, если использовать зависимости, полученные методом наименьших квадратов.
 - [x] `Lines.getEnthalpyLine` by `({ t, fi })`. Линия постоянной энтальпии (см. пункт 3).
 - [x] `Formulas.getEnthalpyByParams0` by `{ t, fi }`
+- [ ] `Formulas.getWBT0` by `{ t, fi }`. Точка росы по графику (не готово)
+- [x] `Formulas.getWBT1` by `{ t, fi }`. Точка росы по упрощенной формуле
 
 ## TODO: STEP 2. Wet Bulb Temperature.
 
@@ -58,8 +60,8 @@ const enthalpyLines = Lines.getEnthalpyLines();
 - [x] 2. Исходные данные для расчета температуры мокрого термометра.
 ```javascript
 // Data from user (2.1)
-const t = 35;
-const fi = 50;
+const t = 28;
+const fi = 43;
 ```
 - [x] 3. Найти уравнение **прямой** (3.1), параллельной прямым постоянных энтальпий (1.1) и проходящую через **точку** (2.1):
 ```
@@ -113,20 +115,26 @@ tWB= ? |             [x]
        |o                 x
        ------------------------------------
                      x= h                 x
-                      dWB= ?
+                      hWB= ?
 ```
 ```javascript
-// TODO:
 // 1) Определить зависимость для кривой насыщения
 // (5.1)
 const lineFi100 = Lines.getBrokenLineByPoints(pointsFi100); // Like h => val
 
 // 2) Найти пересечение кривой насыщения (5.1) с линией (3.1) постоянной энтальпии
-// const commonPoint = Poins.getCommonPoint({
-//   fn1: enthalpyLine,
-//   fn2: lineFi100
-// });
-// // TODO: Does not work yet...
+// WAY 1
+const commonPoint1 = Poins.getCommonPoint0({
+  fn1: enthalpyLine,
+  fn2: lineFi100
+});
+// Formulas.getWBT0({ t, fi }) - в процессе
+// WAY 2: Приблизительный расчет точки росы (упрощенная формула)
+const tWB = Formulas.getWBT1({
+  t, // C
+  fi // %
+});
+// 16.6 // C
 ```
 _To be continued..._
 

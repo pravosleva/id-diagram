@@ -12,14 +12,14 @@ describe('Awesome test.', () => {
 
   // it('should test awesome function', () => {
   //   const expectedVal = 'I am just an Awesome Function'
-  //   assert(awesomeFunction() === expectedVal, 'Named awesome :(');
+  //   assert(awesomeFunction() === expectedVal, 'FuckUp :(');
   // });
 
   // it('Formulas.getTstCoeffs', () => {
   //   const expectedObj = Immutable.Map({ k: 2.207486631016043, b: -22.064 });
   //   const testedObj = Immutable.Map(Formulas.getTstCoeffs());
   //
-  //   assert(testedObj.equals(expectedObj), `Named awesome :( testedObj is ${JSON.stringify(testedObj)}`);
+  //   assert(testedObj.equals(expectedObj), `FuckUp :( testedObj is ${JSON.stringify(testedObj)}`);
   // });
 
   it('1.1. Lines.getEnthalpyLines\ni= -16 kJ/kg; d= 5 g/kg', () => {
@@ -28,7 +28,7 @@ describe('Awesome test.', () => {
     const testHumidity = 5;
     const testedVal = testedFns[0](testHumidity);
 
-    assert(testedVal === expectedEnthalpyVal, `Named awesome :( testedVal(${testHumidity}) is ${testedVal}`);
+    assert(testedVal === expectedEnthalpyVal, `FuckUp :( testedVal(${testHumidity}) is ${testedVal}`);
   });
 
   it('1.2. Lines.getEnthalpyLines\ni= 88 kJ/kg; d= 15 g/kg', () => {
@@ -37,7 +37,7 @@ describe('Awesome test.', () => {
     const testHumidity = 15;
     const testedVal = testedFns[testedFns.length - 1](testHumidity);
 
-    assert(testedVal === expectedEnthalpyVal, `Named awesome :( testedVal(${testHumidity}) is ${testedVal}`);
+    assert(testedVal === expectedEnthalpyVal, `FuckUp :( testedVal(${testHumidity}) is ${testedVal}`);
   });
 
   // DEPRECATED METHODS
@@ -52,7 +52,7 @@ describe('Awesome test.', () => {
   //
   //   assert(
   //     testedVal === expectedHumidityVal,
-  //     `Named awesome :( testedVal(${testTemp}) is ${testedVal}; Should be ${expectedHumidityVal}`
+  //     `FuckUp :( testedVal(${testTemp}) is ${testedVal}; Should be ${expectedHumidityVal}`
   //   );
   // });
   //
@@ -67,7 +67,7 @@ describe('Awesome test.', () => {
   //
   //   assert(
   //     testedVal === expectedHumidityVal,
-  //     `Named awesome :( testedVal(${testTemp}) is ${testedVal}; Should be ${expectedHumidityVal}`
+  //     `FuckUp :( testedVal(${testTemp}) is ${testedVal}; Should be ${expectedHumidityVal}`
   //   );
   // });
 
@@ -78,7 +78,7 @@ describe('Awesome test.', () => {
       fi: 30
     });
 
-    assert(testedVal === expectedEnthalpyVal, `Named awesome :( testedVal is ${testedVal}`);
+    assert(testedVal === expectedEnthalpyVal, `FuckUp :( testedVal is ${testedVal}`);
   });
 
   it('2.2. Formulas.getHumidityByParams1', () => {
@@ -88,7 +88,7 @@ describe('Awesome test.', () => {
       t: 12.310041624590525
     });
 
-    assert(testedVal === expectedEnthalpyVal, `Named awesome :( testedVal is ${testedVal}`);
+    assert(testedVal === expectedEnthalpyVal, `FuckUp :( testedVal is ${testedVal}`);
   });
 
   it('2.3. Formulas.getTemperatureByParams0', () => {
@@ -98,7 +98,7 @@ describe('Awesome test.', () => {
       h: 5
     });
 
-    assert(testedVal === expectedEnthalpyVal, `Named awesome :( testedVal is ${testedVal}`);
+    assert(testedVal === expectedEnthalpyVal, `FuckUp :( testedVal is ${testedVal}`);
   });
 
   it('3.1. userB coeff', () => {
@@ -117,7 +117,7 @@ describe('Awesome test.', () => {
     const userB = t - (k * d);
     const testedT = (k * d) + userB;
 
-    assert(testedT.toFixed(2) === t.toFixed(2), `Named awesome :( testedT is ${testedT}; Should be ${t}`);
+    assert(testedT.toFixed(2) === t.toFixed(2), `FuckUp :( testedT is ${testedT}; Should be ${t}`);
   });
 
   it('3.2. Lines.getEnthalpyLine', () => {
@@ -127,7 +127,7 @@ describe('Awesome test.', () => {
     const d = Formulas.getHumidityByParams0({ t, fi });
     const testedT = enthalpyLine(d);
 
-    assert(testedT.toFixed(2) === t.toFixed(2), `Named awesome :( testedT is ${testedT}; Should be ${t}`);
+    assert(testedT.toFixed(2) === t.toFixed(2), `FuckUp :( testedT is ${testedT}; Should be ${t}`);
   });
 
   it('4.1. Formulas.getEnthalpyByParams0', () => {
@@ -137,7 +137,7 @@ describe('Awesome test.', () => {
     const humidity = Formulas.getHumidityByParams1({ e: enthalpy, t });
     const testedT = Formulas.getTemperatureByParams0({ e: enthalpy, h: humidity });
 
-    assert(testedT.toFixed(2) === t.toFixed(2), `Named awesome :( testedT is ${testedT}; Should be ${t}`);
+    assert(testedT.toFixed(2) === t.toFixed(2), `FuckUp :( testedT is ${testedT}; Should be ${t}`);
   });
 
   it('4.2. Points.getHValues', () => {
@@ -231,7 +231,7 @@ describe('Awesome test.', () => {
     ]);
     const testedObj = Immutable.List(hValues);
 
-    assert(testedObj.equals(expectedObj), `Named awesome :( testedObj is ${JSON.stringify(testedObj)}; Should be ${expectedObj}`);
+    assert(testedObj.equals(expectedObj), `FuckUp :( testedObj is ${JSON.stringify(testedObj)}; Should be ${expectedObj}`);
   });
 
   it('4.3. Lines.getBrokenLineByPoints', () => {
@@ -242,22 +242,33 @@ describe('Awesome test.', () => {
     const expectedVal = 0.5;
     const testedVal = line(-0.5);
 
-    assert(expectedVal === testedVal, `Named awesome :( testedVal is ${testedVal}; Should be ${expectedVal}`);
+    assert(expectedVal === testedVal, `FuckUp :( testedVal is ${testedVal}; Should be ${expectedVal}`);
   });
 
-  it('4.4. Points.getCommonPoint', () => {
+  it('4.4. Points.getCommonPoint0', () => {
     const t = 28;
-    const fi = 40;
+    const fi = 43;
     const enthalpyLine = Lines.getEnthalpyLine({ t, fi });
     const pointsFi100 = Points.getHumidityPoints()[9];
-
-    const point = Points.getCommonPoint({
+    const point = Points.getCommonPoint0({
       fn1: enthalpyLine,
       fn2: Lines.getBrokenLineByPoints(pointsFi100)
     });
-    const expectedObj = Immutable.Map({ x: 0, y: 0 });
+    const expectedObj = Immutable.Map({
+      h: 10.662764310836792,
+      t: 26.757907394488033
+    });
     const testedObj = Immutable.Map(point);
 
-    assert(expectedObj.equals(testedObj), `Named awesome :( testedObj is ${JSON.stringify(point)}; Should be ${JSON.stringify(expectedObj)}`);
+    assert(expectedObj.equals(testedObj), `FuckUp :( point is ${JSON.stringify(point)}; Should be ${JSON.stringify(expectedObj)}`);
+  });
+
+  it('4.5. Formulas.getWBT1', () => {
+    const t = 28;
+    const fi = 43;
+    const expectedVal = 16.6; // Should be 14.2; https://planetcalc.ru/248/
+    const testedVal = Formulas.getWBT1({ t, fi });
+
+    assert(expectedVal === testedVal, `FuckUp :( testedVal is ${JSON.stringify(testedVal)}; Should be ${JSON.stringify(expectedVal)}`);
   });
 });

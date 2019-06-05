@@ -1,4 +1,6 @@
 /* eslint-disable padded-blocks, no-console, operator-assignment, space-before-blocks, max-len, no-mixed-operators, no-shadow, object-curly-newline, no-plusplus */
+import { getCommonPointByBisectionMethod } from 'interpolate-by-pravosleva';
+
 import Formulas from './Formulas';
 
 
@@ -52,31 +54,20 @@ export default class Points {
     return valuesArr;
   }
 
-  // TODO: Код еще не работает
-  static getCommonPoint({ fn1, fn2 }) {
-    const x1 = -1000;
-    // const x2 = 1000;
+  static getCommonPoint0({ fn1, fn2 }) {
+    const point = getCommonPointByBisectionMethod({
+      fn1,
+      fn2,
+      eps: 0.0001
+    });
 
-    let x = x1;
-    const lim = 0.5;
-
-    while (
-      (fn1(x) - fn2(x)) >= lim
-      || (fn2(x) - fn1(x)) >= lim
-    ) {
-      console.log(x);
-      if (
-        (fn1(x) - fn2(x)) > lim
-      ) {
-        x += lim;
-      } else {
-        x -= lim;
-      }
+    if (point.error) {
+      throw new Error(point);
     }
 
-    return ({
-      x,
-      y: fn1(x)
-    });
+    return {
+      h: point.x,
+      t: point.y,
+    };
   }
 }

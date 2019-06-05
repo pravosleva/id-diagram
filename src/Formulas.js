@@ -51,4 +51,14 @@ export default class Formulas {
 
     return enthalpyLine(d);
   }
+
+  static getWBT1({
+    t, // C
+    fi // %
+  }){
+    // Существует более простая формула для приблизительного расчёта, дающая
+    // погрешность ±1,0 °C при относительной влажности в объёмных долях более 0,5
+    // https://ru.wikipedia.org/wiki/%D0%A2%D0%BE%D1%87%D0%BA%D0%B0_%D1%80%D0%BE%D1%81%D1%8B
+    return t - ((1 - (fi / 100)) / 0.05);
+  }
 }
