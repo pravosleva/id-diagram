@@ -52,6 +52,8 @@ export default class Formulas {
     return enthalpyLine(d);
   }
 
+  // ТЕМПЕРАТУРА МОКРОГО ТЕРМОМЕТРА, С
+  // WET BULB TEMPERATURE, C
   static getWBT1({
     t, // C
     fi // %

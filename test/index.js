@@ -245,7 +245,9 @@ describe('Awesome test.', () => {
     assert(expectedVal === testedVal, `FuckUp :( testedVal is ${testedVal}; Should be ${expectedVal}`);
   });
 
-  it('4.4. Points.getCommonPoint0', () => {
+  // Пересечение прямой постоянной энтальпии для заданной точки с ломанной
+  // кривой насыщения fi=100%
+  it('4.4.1. DANGER! Points.getCommonPoint0', () => {
     const t = 28;
     const fi = 43;
     const enthalpyLine = Lines.getEnthalpyLine({ t, fi });
@@ -256,14 +258,15 @@ describe('Awesome test.', () => {
     });
     const expectedObj = Immutable.Map({
       h: 10.662764310836792,
-      t: 26.757907394488033
+      t: 26.757907394488033 // Неверный результат
+      // t: 16.6
     });
     const testedObj = Immutable.Map(point);
 
     assert(expectedObj.equals(testedObj), `FuckUp :( point is ${JSON.stringify(point)}; Should be ${JSON.stringify(expectedObj)}`);
   });
 
-  it('4.5. Formulas.getWBT1', () => {
+  it('4.4.2. Formulas.getWBT1', () => {
     const t = 28;
     const fi = 43;
     const expectedVal = 16.6; // Should be 14.2; https://planetcalc.ru/248/
