@@ -1,4 +1,4 @@
-/* eslint-disable padded-blocks, space-before-blocks, max-len, no-mixed-operators, no-shadow, object-curly-newline, no-plusplus */
+/* eslint-disable arrow-parens, padded-blocks, space-before-blocks, max-len, no-mixed-operators, no-shadow, object-curly-newline, no-plusplus */
 import {
   // byLeastSquaresApproximation,
   by3Points,
@@ -143,64 +143,48 @@ export default class Lines {
   static getEnthalpyLine({ t, fi }) {
     const d = Formulas.getHumidityByParams0({ t, fi });
 
+    // console.log(d); // Ok!
+
     // Берем произвольную линию
     const enthalpyLine = Lines.getEnthalpyLines()[4];
     const x1 = 1;
     const x2 = 5;
     const y1 = enthalpyLine(x1);
     const y2 = enthalpyLine(x2);
-    const { k } = getKB({ x1, y1, x2, y2 });
-    // b = y - (k * x);
-
+    const { k } = getKB({ x1, y1, x2, y2 }); // b = y - (k * x);
     const userB = t - (k * d);
 
     return h => (k * h) + userB;
   }
 
   static getBrokenLineByPoints(points) {
-    const xs = [];
-    const ys = [];
+    const sortedPoints = [...points].sort((p1, p2) => p1.x - p2.x);
 
-    for (let i = 0; i < points.length; i++) {
-      xs.push(points[i].x);
-      ys.push(points[i].y);
-    }
-
-    return (h) => {
+    return h => {
       let x1;
       let x2;
       let y1;
       let y2;
 
-      for (let i = 0; i < points.length; i++) {
-        if (i > 0 && i < (points.length - 1)) {
-          // 1.
-          if (
-            (h < points[i].x)
-            && (h < points[i + 1].x)
-          ) {
-            x1 = points[0].x;
-            x2 = points[1].x;
-            y1 = points[0].y;
-            y2 = points[1].y;
-            break;
-          } else if (
-            (h < points[i].x)
-            && (h > points[i + 1].x)
-          ) {
-            x1 = points[i].x;
-            x2 = points[i + 1].x;
-            y1 = points[i].y;
-            y2 = points[i + 1].y;
+      if (h <= sortedPoints[0].x) {
+        x1 = sortedPoints[0].x;
+        x2 = sortedPoints[1].x;
+        y1 = sortedPoints[0].y;
+        y2 = sortedPoints[1].y;
+      } else if (h >= sortedPoints[sortedPoints.length - 1].x) {
+        x1 = sortedPoints[sortedPoints.length - 2].x;
+        x2 = sortedPoints[sortedPoints.length - 1].x;
+        y1 = sortedPoints[sortedPoints.length - 2].y;
+        y2 = sortedPoints[sortedPoints.length - 1].y;
+      } else {
+        for (let i = 0; i < sortedPoints.length - 1; i++) {
+          if (h >= sortedPoints[i].x && h <= sortedPoints[i + 1].x) {
+            x1 = sortedPoints[i].x;
+            x2 = sortedPoints[i + 1].x;
+            y1 = sortedPoints[i].y;
+            y2 = sortedPoints[i + 1].y;
             break;
           }
-        } else {
-          // 2. Last iteration
-          x1 = points[points.length - 2].x;
-          x2 = points[points.length - 1].x;
-          y1 = points[points.length - 2].y;
-          y2 = points[points.length - 1].y;
-          break;
         }
       }
 

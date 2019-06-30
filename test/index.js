@@ -5,40 +5,23 @@ import { getKB } from 'interpolate-by-pravosleva';
 import { Formulas, Lines, Points } from '../src';
 
 describe('Awesome test.', () => {
-  // it('should test default awesome function', () => {
-  //   const expectedVal = 'I am the Default Awesome Function, fellow comrade! - Dinesh'
-  //   assert(defaultAwesomeFunction('Dinesh') === expectedVal, 'Default not awesome :(');
-  // });
-
-  // it('should test awesome function', () => {
-  //   const expectedVal = 'I am just an Awesome Function'
-  //   assert(awesomeFunction() === expectedVal, 'FuckUp :(');
-  // });
-
-  // it('Formulas.getTstCoeffs', () => {
-  //   const expectedObj = Immutable.Map({ k: 2.207486631016043, b: -22.064 });
-  //   const testedObj = Immutable.Map(Formulas.getTstCoeffs());
+  // it('1.1. Lines.getEnthalpyLines\ni= -18 kJ/kg; d= 3 g/kg', () => {
+  //   const expectedEnthalpyVal = -18;
+  //   const testedFns = Lines.getEnthalpyLines();
+  //   const testHumidity = 3;
+  //   const testedVal = testedFns[0](testHumidity);
   //
-  //   assert(testedObj.equals(expectedObj), `FuckUp :( testedObj is ${JSON.stringify(testedObj)}`);
+  //   assert(testedVal === expectedEnthalpyVal, `FuckUp :( testedVal(${testHumidity}) is ${testedVal}`);
   // });
 
-  it('1.1. Lines.getEnthalpyLines\ni= -16 kJ/kg; d= 5 g/kg', () => {
-    const expectedEnthalpyVal = -11.026566844919786;
-    const testedFns = Lines.getEnthalpyLines();
-    const testHumidity = 5;
-    const testedVal = testedFns[0](testHumidity);
-
-    assert(testedVal === expectedEnthalpyVal, `FuckUp :( testedVal(${testHumidity}) is ${testedVal}`);
-  });
-
-  it('1.2. Lines.getEnthalpyLines\ni= 88 kJ/kg; d= 15 g/kg', () => {
-    const expectedEnthalpyVal = 1.5158924205378952;
-    const testedFns = Lines.getEnthalpyLines();
-    const testHumidity = 15;
-    const testedVal = testedFns[testedFns.length - 1](testHumidity);
-
-    assert(testedVal === expectedEnthalpyVal, `FuckUp :( testedVal(${testHumidity}) is ${testedVal}`);
-  });
+  // it('1.2. Lines.getEnthalpyLines\ni= 88 kJ/kg; d= 15 g/kg', () => {
+  //   const expectedEnthalpyVal = 1.5158924205378952;
+  //   const testedFns = Lines.getEnthalpyLines();
+  //   const testHumidity = 15;
+  //   const testedVal = testedFns[testedFns.length - 1](testHumidity);
+  //
+  //   assert(testedVal === expectedEnthalpyVal, `FuckUp :( testedVal(${testHumidity}) is ${testedVal}`);
+  // });
 
   // DEPRECATED METHODS
   // it('Lines._getHumidityLines fi= 10 %; t= 15 C', () => {
@@ -55,7 +38,7 @@ describe('Awesome test.', () => {
   //     `FuckUp :( testedVal(${testTemp}) is ${testedVal}; Should be ${expectedHumidityVal}`
   //   );
   // });
-  //
+
   // it('Lines._getHumidityLines fi= 100 %; t= 21 C', () => {
   //   const expectedHumidityVal = Formulas.getHumidityByParams0({
   //     temperature: 21,
@@ -247,26 +230,25 @@ describe('Awesome test.', () => {
 
   // Пересечение прямой постоянной энтальпии для заданной точки с ломанной
   // кривой насыщения fi=100%
-  it('4.4.1. DANGER! Points.getCommonPoint0', () => {
-    const t = 28;
-    const fi = 43;
-    const enthalpyLine = Lines.getEnthalpyLine({ t, fi });
-    const pointsFi100 = Points.getHumidityPoints()[9];
-    const point = Points.getCommonPoint0({
-      fn1: enthalpyLine,
-      fn2: Lines.getBrokenLineByPoints(pointsFi100)
-    });
-    const expectedObj = Immutable.Map({
-      h: 10.662764310836792,
-      t: 26.757907394488033 // Неверный результат
-      // t: 16.6
-    });
-    const testedObj = Immutable.Map(point);
+  it('4.4.1. Points.getWBT0 t= 16; fi= 50', () => {
+    const t = 16;
+    const fi = 50;
+    const expectedVal = 10.504039926462635;
+    const testedVal = Formulas.getWBT0({ t, fi });
 
-    assert(expectedObj.equals(testedObj), `FuckUp :( point is ${JSON.stringify(point)}; Should be ${JSON.stringify(expectedObj)}`);
+    assert(expectedVal === testedVal, `FuckUp :( testedVal is ${testedVal}; Should be ${expectedVal}`);
   });
 
-  it('4.4.2. Formulas.getWBT1', () => {
+  it('4.4.2. ATTENTION! 19 C! Points.getWBT0 Moscow: t= 28; fi= 43', () => {
+    const t = 28;
+    const fi = 43;
+    const expectedVal = 19.04703443788459;
+    const testedVal = Formulas.getWBT0({ t, fi });
+
+    assert(expectedVal === testedVal, `FuckUp :( testedVal is ${testedVal}; Should be ${expectedVal}`);
+  });
+
+  it('4.4.3. Formulas.getWBT1 Moscow: t= 28; fi= 43', () => {
     const t = 28;
     const fi = 43;
     const expectedVal = 16.6; // Should be 14.2; https://planetcalc.ru/248/
@@ -274,4 +256,29 @@ describe('Awesome test.', () => {
 
     assert(expectedVal === testedVal, `FuckUp :( testedVal is ${JSON.stringify(testedVal)}; Should be ${JSON.stringify(expectedVal)}`);
   });
+
+  it('5.1 Points.getCommonPoint0', () => {
+    const { k: k1, b: b1 } = getKB({ x1: 0, y1: 1, x2: 1, y2: 2 });
+    const { k: k2, b: b2 } = getKB({ x1: 0, y1: 2, x2: 1, y2: 1 });
+    const fn1 = x => (k1 * x) + b1;
+    const fn2 = x => (k2 * x) + b2;
+    const point = Immutable.Map(Points.getCommonPoint0({ fn1, fn2 }));
+    const expectedPoint = Immutable.Map({ h: 0.5000384769439699, t: 1.5000384769439699 });
+
+    assert(point.equals(expectedPoint), 'FUCKUP: Doesn\'t work!')
+  });
+
+  // Was not checked yet.
+  // it('5.2. pointsFi100 test h= 5.034 g/kg', () => {
+  //   const h = 5.034;
+  //   const pointsFi100 = Points.getFi100Points();
+  //   const lineFi100 = Lines.getBrokenLineByPoints(pointsFi100);
+  //
+  //   [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(h => console.log(lineFi100(h)));
+  //
+  //   const expectedVal = 4; // C
+  //   const testedVal = lineFi100(h);
+  //
+  //   assert(testedVal === expectedVal, `FuckUp :( testedVal is ${testedVal}; Should be ${expectedVal}`);
+  // });
 });

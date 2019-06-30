@@ -1,6 +1,6 @@
 # id-diagram
 
-## Usage
+## Usage examples
 
 ```javascript
 import { Formulas, Points, Lines } from 'id-diagram';
@@ -46,7 +46,7 @@ _To be continued..._
 Неприменимо, т.к. при тестировании выявлена высокая погрешность, если использовать зависимости, полученные методом наименьших квадратов.
 - [x] `Lines.getEnthalpyLine` by `({ t, fi })`. Линия постоянной энтальпии (см. пункт 3).
 - [x] `Formulas.getEnthalpyByParams0` by `{ t, fi }`
-- [ ] `Formulas.getWBT0` by `{ t, fi }`. Точка росы по графику (не готово)
+- [ ] `Formulas.getWBT0` by `{ t, fi }`. Точка росы по графику (TODO: проерить причину низкой точности расчета)
 - [x] `Formulas.getWBT1` by `{ t, fi }`. Точка росы по упрощенной формуле
 
 ## TODO: STEP 2. Wet Bulb Temperature.
@@ -103,7 +103,7 @@ const pointsFi100 = Points.getHumidityPoints()[9]; // Like [{ x, y }]
 // Для диапазона температур -41 до 41 с шагом 1
 // TODO: Усовершенствовать функцию
 ```
-- [ ] 5. Search tWB (wet bulb point) by `{ t, fi }` when i= const.
+- [x] 5. Search tWB (wet bulb point) by `{ t, fi }` when i= const.
 Найти пересечение прямой (3.1) и кривой насыщения.
 ```
 y      |            x                     o
@@ -123,17 +123,17 @@ tWB= ? |             [x]
 const lineFi100 = Lines.getBrokenLineByPoints(pointsFi100); // Like h => val
 
 // 2) Найти пересечение кривой насыщения (5.1) с линией (3.1) постоянной энтальпии
-// WAY 1
+
+// WAY 1: Поиск температуры мокрого термометра по графику
 const commonPoint1 = Poins.getCommonPoint0({
   fn1: enthalpyLine,
   fn2: lineFi100
 });
-// Formulas.getWBT0({ t, fi }) - в процессе
+const tWB0 = Formulas.getWBT0({ t, fi });
+// 19.051343647195182 C
+
 // WAY 2: Приблизительный расчет точки росы (упрощенная формула)
-const tWB = Formulas.getWBT1({
-  t, // C
-  fi // %
-});
+const tWB1 = Formulas.getWBT1({ t, fi });
 // 16.6 // C
 ```
 _To be continued..._

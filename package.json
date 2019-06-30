@@ -1,6 +1,6 @@
 {
   "name": "id-diagram",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "id-diagram methods",
   "main": "./lib/index.js",
   "scripts": {
@@ -59,6 +59,6 @@
   },
   "dependencies": {
     "get-parabola": "^1.1.5",
-    "interpolate-by-pravosleva": "^2.0.5"
+    "interpolate-by-pravosleva": "^3.0.6"
   }
 }
