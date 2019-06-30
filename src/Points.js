@@ -2,7 +2,7 @@
 import { getCommonPointByBisectionMethod } from 'interpolate-by-pravosleva';
 
 import Formulas from './Formulas';
-
+// import pointsFi10 from './points/humidity10.json';
 
 export default class Points {
 
@@ -95,6 +95,8 @@ export default class Points {
       { x: 51.776, y: 41 },
     ];
     */
+    // v2
+    // const pointsArr = pointsFi100; // Simple json from ./poinst/humidity100.json planned
 
     return pointsArr;
   }
