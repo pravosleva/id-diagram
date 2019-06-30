@@ -1,28 +1,28 @@
 # id-diagram
 
-## DOC
+## Documentation
 
 Method | Arguments | Description
 ------------ | ------------- | -------------
-Formulas.getHumidityByParams0 | | _g/kg dry air, (number)_
-👉 | t | temperature, C
-👉 | fi | relativities, %
-Formulas.getTemperatureByParams0 | | _C, (number)_
-👉 | e | enthalpy, kJ/kg
-👉 | h | humidity, g/kg dry air
-Formulas.getHumidityByParams1 | | _g/kg dry air, (number)_
-👉 | e | enthalpy, kJ/kg
-👉 | t | temperature, C
-Lines.getEnthalpyLines | | _functions Array_
-Formulas.getWBT | Wet Bulb Temperature | _C (number)_
-👉 | t | temperature, C
-👉 | fi | relativities, %
-Formulas.getTR0 | | Dew Point, _C (number)_ High accuracy
-👉 | t | temperature, C
-👉 | fi | relativities, %
-Formulas.getTR1 | | Dew Point, _C (number)_ Low accuracy
-👉 | t | temperature, C
-👉 | fi | relativities, %
+`Formulas.getHumidityByParams0` | | _g/kg dry air, (number)_
+👉 | `t` | temperature, C
+👉 | `fi` | relativities, %
+`Formulas.getTemperatureByParams0` | | _C, (number)_
+👉 | `e` | enthalpy, kJ/kg
+👉 | `h` | humidity, g/kg dry air
+`Formulas.getHumidityByParams1` | | _g/kg dry air, (number)_
+👉 | `e` | enthalpy, kJ/kg
+👉 | `t` | temperature, C
+`Lines.getEnthalpyLines` | | _functions Array_
+`Formulas.getWBT` | Wet Bulb Temperature | _C (number)_
+👉 | `t` | temperature, C
+👉 | `fi` | relativities, %
+`Formulas.getTR0` | | Dew Point, _C (number)_ High accuracy
+👉 | `t` | temperature, C
+👉 | `fi` | relativities, %
+`Formulas.getTR1` | | Dew Point, _C (number)_ Low accuracy
+👉 | `t` | temperature, C
+👉 | `fi` | relativities, %
 
 _To be continued..._
 
