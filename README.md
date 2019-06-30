@@ -1,8 +1,12 @@
 # id-diagram
 
-## Documentation
+## Install
 
-`$ yarn add id-diagram`
+```
+$ yarn add id-diagram
+```
+
+## Documentation
 
 Method | Arguments | Description
 ------------ | ------------- | -------------
@@ -24,10 +28,10 @@ Method | Arguments | Description
 `Formulas.getWBT` | | Wet Bulb Temperature, _C (number)_
 👉 | `t` | temperature, C
 👉 | `fi` | relativities, %
-`Formulas.getTR0` | | Dew Point (high accuracy), _C (number)_
+`Formulas.getTR0` | | Dew Point (RECOMMENDED), _C (number)_
 👉 | `t` | temperature, C
 👉 | `fi` | relativities, %
-`Formulas.getTR1` | | Dew Point (low accuracy), _C (number)_
+`Formulas.getTR1` | | Dew Point (DEPRECATED: low accuracy), _C (number)_
 👉 | `t` | temperature, C
 👉 | `fi` | relativities, %
 
@@ -41,7 +45,7 @@ _To be continued..._
 - [x] `Formulas.getTemperatureByParams0` by `({ e, h })`
 - [x] `Formulas.getHumidityByParams1` by `({ e, t })`
 - [x] `Lines.getEnthalpyLines` (Массив линейных функций в аналит. виде `h => (k * h) + b`) 54 pcs from -18 to 88 kJ/kg by step 2
-- [ ] `Lines.getHumidityLines` (Массив квадратичных функций в аналит. виде `h => (a * h^2) + b * t`) from 10 to 100 %.
+- [ ] `Lines.getHumidityLines` (Массив квадратичных функций в аналит. виде `h => (a * h ^ 2) + b * t`) from 10 to 100 %.
 Неприменимо, т.к. при тестировании выявлена высокая погрешность, если использовать зависимости, полученные методом наименьших квадратов.
 - [x] `Lines.getEnthalpyLine` by `({ t, fi })`. Линия постоянной энтальпии (см. пункт 3).
 - [x] `Formulas.getEnthalpyByParams0` by `({ t, fi })`
@@ -85,7 +89,7 @@ const x = Formulas.getHumidityByParams0({ t, fi });
 // Температура как значение по оси y - известно из пункта 2.
 const y = t;
 ```
-- [x] 4. Есть массив точек кривой насыщения `fi=100%`:
+- [x] 4. Есть массив точек кривой насыщения `fi= 100%`:
 ```
 y      |                                  o
        |                     o
@@ -129,21 +133,17 @@ const lineFi100 = Lines.getBrokenLineByPoints(pointsFi100); // Like h => val
 const tWB = Formulas.getWBT({ t, fi });
 // 19.051343647195182 // C
 
-// Точка росы по графику (более точный вариант)
+// Точка росы по графику (более точный вариант, чем следующий)
 const tR0 = Formulas.getTR0({ t, fi });
-// 14.2 // C
+// 14.266000848002328 // C
 
-// Точка росы (упрощенная формула)
+// Точка росы (упрощенная формула - не рекомендуется)
 const tR1 = Formulas.getTR1({ t, fi });
 // 16.6 // C
 ```
 _To be continued..._
 
-## TODO: STEP 3. Doc.
-
-- [ ] Сделать нормальную доку по методам.
-
-## TODO: STEP 4. Processes.
+## TODO: STEP 3. Processes.
 
 Вычисление термодинамических процессов.
 - [ ] `class TDPoint` как отдельная сущность

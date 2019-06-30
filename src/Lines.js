@@ -1,28 +1,14 @@
 /* eslint-disable arrow-parens, padded-blocks, space-before-blocks, max-len, no-mixed-operators, no-shadow, object-curly-newline, no-plusplus */
 import {
   // byLeastSquaresApproximation,
+  by2Points,
   by3Points,
 } from 'get-parabola';
 import { getKB, linear } from 'interpolate-by-pravosleva';
 
-import {
-  enthalpy,
-  // humidity,
-} from './points';
+import { enthalpy } from './points';
 import Formulas from './Formulas';
 
-
-const getNormalized2Points = (arr) => {
-  const [p1, p2] = arr;
-
-  return { x1: p1.x, y1: p1.y, x2: p2.x, y2: p2.y };
-};
-const getNormalized3Points = (arr) => {
-  const [p1, p2, p3] = arr;
-
-  return { x1: p1.x, y1: p1.y, x2: p2.x, y2: p2.y, x3: p3.x, y3: p3.y };
-};
-const by2Points = enthalpyPoints => getKB(getNormalized2Points(enthalpyPoints));
 
 export default class Lines {
 
@@ -45,7 +31,7 @@ export default class Lines {
       }
     }
     // pointsArrs.map(points => coeffsArr.push(byLeastSquaresApproximation(points)));
-    pointsArrs.map(points => coeffsArr.push(by3Points(getNormalized3Points(points))));
+    pointsArrs.map(points => coeffsArr.push(by3Points(points)));
 
     return coeffsArr.map(({ a, b, c }) => h => (a * (h ** 2)) + (b * h) + c);
   }
