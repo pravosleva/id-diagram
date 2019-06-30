@@ -2,6 +2,8 @@
 
 ## Documentation
 
+`$ yarn add id-diagram`
+
 Method | Arguments | Description
 ------------ | ------------- | -------------
 `Formulas.getHumidityByParams0` | | _g/kg dry air, (number)_
@@ -13,14 +15,19 @@ Method | Arguments | Description
 `Formulas.getHumidityByParams1` | | _g/kg dry air, (number)_
 👉 | `e` | enthalpy, kJ/kg
 👉 | `t` | temperature, C
-`Lines.getEnthalpyLines` | | _functions Array_
-`Formulas.getWBT` | Wet Bulb Temperature | _C (number)_
+`Lines.getEnthalpyLine` | | _function_
 👉 | `t` | temperature, C
 👉 | `fi` | relativities, %
-`Formulas.getTR0` | | Dew Point, _C (number)_ High accuracy
+`Formulas.getEnthalpyByParams0` | | _kJ/kg (number)_
 👉 | `t` | temperature, C
 👉 | `fi` | relativities, %
-`Formulas.getTR1` | | Dew Point, _C (number)_ Low accuracy
+`Formulas.getWBT` | | Wet Bulb Temperature, _C (number)_
+👉 | `t` | temperature, C
+👉 | `fi` | relativities, %
+`Formulas.getTR0` | | Dew Point (high accuracy), _C (number)_
+👉 | `t` | temperature, C
+👉 | `fi` | relativities, %
+`Formulas.getTR1` | | Dew Point (low accuracy), _C (number)_
 👉 | `t` | temperature, C
 👉 | `fi` | relativities, %
 
@@ -97,8 +104,6 @@ const pointsFi100 = Points.getHumidityPoints()[9]; // Like [{ x, y }]
 // TODO: Усовершенствовать функцию
 ```
 - [x] 5.1 Search Wet Bulb Temperature by `({ t, fi })` when i= const.
-- [x] 5.2 tR by `({ t, fi })` when i= const.
-Найти пересечение прямой (3.1) и кривой насыщения.
 ```
 y      |            x                     o
 y= t   |            [x]      o
@@ -110,7 +115,10 @@ tWB= ? |             [x]
        ------------------------------------
                      x= h                 x
                       hWB= ?
+                     tR0 (or tR1)
 ```
+- [x] 5.2 tR by `({ t, fi })` when i= const.
+Найти пересечение прямой (3.1) и кривой насыщения.
 ```javascript
 // 1) Определить зависимость для кривой насыщения (5.1)
 const lineFi100 = Lines.getBrokenLineByPoints(pointsFi100); // Like h => val
