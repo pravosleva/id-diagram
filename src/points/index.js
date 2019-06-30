@@ -55,7 +55,8 @@ import enthalpy51 from './enthalpy51.json'; // 84 kJ/kg
 import enthalpy52 from './enthalpy52.json'; // 86 kJ/kg
 import enthalpy53 from './enthalpy53.json'; // 88 kJ/kg
 
-import humidity10 from './humidity10.json'; // 10 %
+import fi10 from './fi10.json'; // 10 %
+import fi100 from './fi100.json'; // 100 %
 
 const enthalpy = {
   "-18": enthalpy0,
@@ -113,9 +114,10 @@ const enthalpy = {
   "86": enthalpy52,
   "88": enthalpy53
 };
-const humidity = {
-  "10": humidity10,
+const fi = {
+  "10": fi10,
   // Others...
+  "100": fi100
 };
 
-export { enthalpy, humidity };
+export { enthalpy, fi };

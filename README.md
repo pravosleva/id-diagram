@@ -1,53 +1,46 @@
 # id-diagram
 
-## Usage examples
+## DOC
 
-```javascript
-import { Formulas, Points, Lines } from 'id-diagram';
+Method | Arguments | Description
+------------ | ------------- | -------------
+Formulas.getHumidityByParams0 | | _g/kg dry air, (number)_
+ | t | temperature, C
+ | fi | relativities, %
+Formulas.getTemperatureByParams0 | | _C, (number)_
+ | e | enthalpy, kJ/kg
+ | h | humidity, g/kg dry air
+Formulas.getHumidityByParams1 | | _g/kg dry air, (number)_
+ | e | enthalpy, kJ/kg
+ | t | temperature, C
+Lines.getEnthalpyLines | | _functions Array_ like `h => (k * h) + b` from -18 to 88 kJ/kg by step 2
+Formulas.getWBT | Wet Bulb Temperature | _C (number)_
+ | t | temperature, C
+ | fi | relativities, %
+Formulas.getTR0 | | Dew Point, _C (number)_ High accuracy
+ | t | temperature, C
+ | fi | relativities, %
+Formulas.getTR1 | | Dew Point, _C (number)_ Low accuracy
+ | t | temperature, C
+ | fi | relativities, %
 
-const d0 = Formulas.getHumidityByParams0({
-  t: 15, // temperature (C)
-  fi: 10, // relativities (%)
-  barometricPressure: 101.325, // BP (kPa), optional param= 101.325 by default
-}); // (g/kg of dry air)
-
-console.log(d0);
-// 1.048908791886
-
-const d1 = Formulas.getHumidityByParams1({
-  e: 25, // enthalpy (kJ/kg)
-  t: 12.310041624590525, // temperature (C)
-}); // (g/kg of dry air)
-
-console.log(d1);
-// 5.000000000000001
-
-const t0 = Formulas.getTemperatureByParams0({
-  e: 25, // enthalpy (kJ/kg)
-  h: 5, // humidity (g/kg of dry air)
-}); // (C)
-
-console.log(t0);
-// 12.310041624590525
-
-// Something else...
-```
 _To be continued..._
 
 ## TODO: STEP 1. Basis.
 
 Теоретическая база & уравнения кривых по точкам
 
-- [x] `Formulas.getHumidityByParams0` by `{ t, barometricPressure = 101.325, fi }`
-- [x] `Formulas.getTemperatureByParams0` by `{ e, h }`
-- [x] `Formulas.getHumidityByParams1` by `{ e, t }`
-- [x] `Lines.getEnthalpyLines` (Массив линейных функций в аналит. виде `h=>k*h+b`) 54 pcs from -18 to 88 kJ/kg by step 2
-- [ ] `Lines.getHumidityLines` (Массив квадратичных функций в аналит. виде `h=>a*h^2+b*t`) from 10 to 100 %.
+- [x] `Formulas.getHumidityByParams0` by `({ t, barometricPressure = 101.325, fi })`
+- [x] `Formulas.getTemperatureByParams0` by `({ e, h })`
+- [x] `Formulas.getHumidityByParams1` by `({ e, t })`
+- [x] `Lines.getEnthalpyLines` (Массив линейных функций в аналит. виде `h => (k * h) + b`) 54 pcs from -18 to 88 kJ/kg by step 2
+- [ ] `Lines.getHumidityLines` (Массив квадратичных функций в аналит. виде `h => (a * h^2) + b * t`) from 10 to 100 %.
 Неприменимо, т.к. при тестировании выявлена высокая погрешность, если использовать зависимости, полученные методом наименьших квадратов.
 - [x] `Lines.getEnthalpyLine` by `({ t, fi })`. Линия постоянной энтальпии (см. пункт 3).
-- [x] `Formulas.getEnthalpyByParams0` by `{ t, fi }`
-- [ ] `Formulas.getWBT0` by `{ t, fi }`. Точка росы по графику (TODO: проерить причину низкой точности расчета)
-- [x] `Formulas.getWBT1` by `{ t, fi }`. Точка росы по упрощенной формуле
+- [x] `Formulas.getEnthalpyByParams0` by `({ t, fi })`
+- [x] `Formulas.getWBT` by `({ t, fi })`. Температура мокрого термометра по графику
+- [x] `Formulas.getTR0` by `({ t, fi })`. Точка росы по графику (более точный вариант - high accuracy)
+- [x] `Formulas.getTR1` by `({ t, fi })`. Точка росы по упрощенной формуле (упрощенная формула - low accuracy)
 
 ## TODO: STEP 2. Wet Bulb Temperature.
 
@@ -103,7 +96,8 @@ const pointsFi100 = Points.getHumidityPoints()[9]; // Like [{ x, y }]
 // Для диапазона температур -41 до 41 с шагом 1
 // TODO: Усовершенствовать функцию
 ```
-- [x] 5. Search tWB (wet bulb point) by `{ t, fi }` when i= const.
+- [x] 5.1 Search Wet Bulb Temperature by `({ t, fi })` when i= const.
+- [x] 5.2 tR by `({ t, fi })` when i= const.
 Найти пересечение прямой (3.1) и кривой насыщения.
 ```
 y      |            x                     o
@@ -118,22 +112,21 @@ tWB= ? |             [x]
                       hWB= ?
 ```
 ```javascript
-// 1) Определить зависимость для кривой насыщения
-// (5.1)
+// 1) Определить зависимость для кривой насыщения (5.1)
 const lineFi100 = Lines.getBrokenLineByPoints(pointsFi100); // Like h => val
 
 // 2) Найти пересечение кривой насыщения (5.1) с линией (3.1) постоянной энтальпии
 
-// WAY 1: Поиск температуры мокрого термометра по графику
-const commonPoint1 = Poins.getCommonPoint0({
-  fn1: enthalpyLine,
-  fn2: lineFi100
-});
-const tWB0 = Formulas.getWBT0({ t, fi });
-// 19.051343647195182 C
+// Поиск температуры мокрого термометра по графику
+const tWB = Formulas.getWBT({ t, fi });
+// 19.051343647195182 // C
 
-// WAY 2: Приблизительный расчет точки росы (упрощенная формула)
-const tWB1 = Formulas.getWBT1({ t, fi });
+// Точка росы по графику (более точный вариант)
+const tR0 = Formulas.getTR0({ t, fi });
+// 14.2 // C
+
+// Точка росы (упрощенная формула)
+const tR1 = Formulas.getTR1({ t, fi });
 // 16.6 // C
 ```
 _To be continued..._
@@ -151,6 +144,40 @@ _To be continued..._
 - [ ] Адиабатическое охлаждение
 - [ ] Пароувлажнение
 - [ ] _Прочие процессы..._
+
+## Usage examples
+
+```javascript
+import { Formulas, Points, Lines } from 'id-diagram';
+
+const d0 = Formulas.getHumidityByParams0({
+  t: 15, // temperature (C)
+  fi: 10, // relativities (%)
+  barometricPressure: 101.325, // BP (kPa), optional param= 101.325 by default
+}); // (g/kg of dry air)
+
+console.log(d0);
+// 1.048908791886
+
+const d1 = Formulas.getHumidityByParams1({
+  e: 25, // enthalpy (kJ/kg)
+  t: 12.310041624590525, // temperature (C)
+}); // (g/kg of dry air)
+
+console.log(d1);
+// 5.000000000000001
+
+const t0 = Formulas.getTemperatureByParams0({
+  e: 25, // enthalpy (kJ/kg)
+  h: 5, // humidity (g/kg of dry air)
+}); // (C)
+
+console.log(t0);
+// 12.310041624590525
+
+// Something else...
+```
+_To be continued..._
 
 ## Commands
 - `npm run clean` - Remove `lib/` directory

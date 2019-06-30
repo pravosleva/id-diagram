@@ -1,6 +1,7 @@
 /* eslint-disable function-paren-newline, arrow-parens, padded-blocks, space-before-blocks, max-len, no-mixed-operators, no-shadow, object-curly-newline, no-plusplus */
 import Lines from './Lines';
 import Points from './Points';
+import { fi as fiPoints } from './points';
 
 export default class Formulas {
 
@@ -53,9 +54,23 @@ export default class Formulas {
     return enthalpyLine(d);
   }
 
-  // ТЕМПЕРАТУРА МОКРОГО ТЕРМОМЕТРА, С
-  // WET BULB TEMPERATURE, C
-  static getWBT1({
+  // ТЕМПЕРАТУРА ТОЧКИ РОСЫ (По графику), С
+  // tR POINT TEMPERATURE (by graphic), C
+  static getTR0({
+    t, // C
+    fi // %
+  }){
+    const d = Formulas.getHumidityByParams0({ t, fi });
+    const pointsFi100 = fiPoints['100'];
+    const fi100Line = Lines.getBrokenLineByPoints(pointsFi100);
+    const tR = fi100Line(d);
+
+    return tR;
+  }
+
+  // ТЕМПЕРАТУРА ТОЧКИ РОСЫ (Упрощенная формула), С
+  // tR POINT TEMPERATURE (Simplest way), C
+  static getTR1({
     t, // C
     fi // %
   }){
@@ -65,17 +80,20 @@ export default class Formulas {
     return t - ((1 - (fi / 100)) / 0.05);
   }
 
-  static getWBT0({
+  // ТЕМПЕРАТУРА МОКРОГО ТЕРМОМЕТРА, С
+  // WET BULB TEMPERATURE, C
+  static getWBT({
     t, // C
     fi // %
   }){
-    // v0-1-2
     const enthalpyLine = Lines.getEnthalpyLine({ t, fi });
     // console.log(enthalpyLine(5.6)); // Ok!
+    // console.log(`t= ${t} / fi= ${fi} / e= ${enthalpyLine(5)}`);
+
     // v0
     // const pointsFi100 = Points.getHumidityPoints()[9];
     // v1
-    const pointsFi100 = Points.getFi100Points();
+    // const pointsFi100 = Points.getFi100Points();
     // v2
     // const pointsFi100 = [];
     // const temperatureTemplateArr = [
@@ -91,56 +109,14 @@ export default class Formulas {
     //   return false;
     // });
     // v3: http://helpeng.ru/programs/properties_dump_air.php
-    /*
-    const pointsFi100 = [
-      { x: 0.07, y: -41 },
-      { x: 0.079, y: -40 },
-      // TODO
-      { x: 6.212, y: 7 },
-      { x: 6.656, y: 8 },
-      { x: 7.129, y: 9 },
-      { x: 7.631, y: 10 },
-      { x: 8.164, y: 11 },
-      { x: 8.731, y: 12 },
-      { x: 9.333, y: 13 },
-      { x: 9.971, y: 14 },
-      { x: 10.648, y: 15 },
-      { x: 11.002, y: 15.5 },
-      { x: 11.367, y: 16 },
-      { x: 11.742, y: 16.5 },
-      { x: 12.128, y: 17 },
-      { x: 12.936, y: 18 },
-      { x: 13.791, y: 19 },
-      { x: 14.696, y: 20 },
-      { x: 15.655, y: 21 },
-      { x: 16.67, y: 22 },
-      { x: 17.745, y: 23 },
-      { x: 18.881, y: 24 },
-      { x: 20.083, y: 25 },
-      { x: 21.354, y: 26 },
-      { x: 22.698, y: 27 },
-      { x: 24.118, y: 28 },
-      { x: 25.619, y: 29 },
-      { x: 27.205, y: 30 },
-      { x: 28.881, y: 31 },
-      { x: 30.65, y: 32 },
-      { x: 32.52, y: 33 },
-      { x: 34.494, y: 34 },
-      { x: 36.579, y: 35 },
-      { x: 38.78, y: 36 },
-      { x: 41.105, y: 37 },
-      { x: 43.559, y: 38 },
-      { x: 46.151, y: 39 },
-      { x: 48.887, y: 40 },
-      { x: 51.776, y: 41 },
-    ];
-    */
+    const pointsFi100 = fiPoints['100'];
+
     const point = Points.getCommonPoint0({
       fn1: enthalpyLine,
       fn2: Lines.getBrokenLineByPoints(pointsFi100)
     });
 
-    // console.log(point);
+    // console.log(point); // Ok.
 
     return point.t;
   }

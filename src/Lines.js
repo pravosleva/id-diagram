@@ -145,8 +145,8 @@ export default class Lines {
 
     // console.log(d); // Ok!
 
-    // Берем произвольную линию
-    const enthalpyLine = Lines.getEnthalpyLines()[4];
+    // Берем произвольную линию для вычисления k
+    const enthalpyLine = Lines.getEnthalpyLines()[10];
     const x1 = 1;
     const x2 = 5;
     const y1 = enthalpyLine(x1);

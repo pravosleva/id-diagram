@@ -230,31 +230,40 @@ describe('Awesome test.', () => {
 
   // Пересечение прямой постоянной энтальпии для заданной точки с ломанной
   // кривой насыщения fi=100%
-  it('4.4.1. Points.getWBT0 t= 16; fi= 50', () => {
+  it('4.4.1. Points.getWBT t= 16; fi= 50', () => {
     const t = 16;
     const fi = 50;
-    const expectedVal = 10.504039926462635;
-    const testedVal = Formulas.getWBT0({ t, fi });
+    const expectedVal = 10.484320675266424;
+    const testedVal = Formulas.getWBT({ t, fi });
 
     assert(expectedVal === testedVal, `FuckUp :( testedVal is ${testedVal}; Should be ${expectedVal}`);
   });
 
-  it('4.4.2. ATTENTION! 19 C! Points.getWBT0 Moscow: t= 28; fi= 43', () => {
+  it('4.4.2. WET BULB TEMPERATURE Points.getWBT for Moscow: t= 28; fi= 43', () => {
     const t = 28;
     const fi = 43;
-    const expectedVal = 19.04703443788459;
-    const testedVal = Formulas.getWBT0({ t, fi });
+    const expectedVal = 19.030956508469423;
+    const testedVal = Formulas.getWBT({ t, fi });
 
     assert(expectedVal === testedVal, `FuckUp :( testedVal is ${testedVal}; Should be ${expectedVal}`);
   });
 
-  it('4.4.3. Formulas.getWBT1 Moscow: t= 28; fi= 43', () => {
+  it('4.4.3. Formulas.getTR0 Moscow: t= 28; fi= 43', () => {
+    const t = 28;
+    const fi = 43;
+    const expectedVal = 14.266000848002328; // Should be 14.2; https://planetcalc.ru/248/
+    const testedVal = Formulas.getTR0({ t, fi });
+
+    assert(expectedVal === testedVal, `FuckUp :( testedVal is ${testedVal}; Should be ${expectedVal}`);
+  });
+
+  it('4.4.4. Formulas.getTR1 Moscow: t= 28; fi= 43', () => {
     const t = 28;
     const fi = 43;
     const expectedVal = 16.6; // Should be 14.2; https://planetcalc.ru/248/
-    const testedVal = Formulas.getWBT1({ t, fi });
+    const testedVal = Formulas.getTR1({ t, fi });
 
-    assert(expectedVal === testedVal, `FuckUp :( testedVal is ${JSON.stringify(testedVal)}; Should be ${JSON.stringify(expectedVal)}`);
+    assert(expectedVal === testedVal, `FuckUp :( testedVal is ${testedVal}; Should be ${expectedVal}`);
   });
 
   it('5.1 Points.getCommonPoint0', () => {
