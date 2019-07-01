@@ -7,13 +7,25 @@ class TDPoint {
     const requiredProps = ['t', 'fi'];
     const optionalProps = ['errors'];
 
+    this.errors = [];
+
     for (let i = 0; i < requiredProps.length; i++) {
-      this[requiredProps[i]] = props[requiredProps[i]];
+      if (props[requiredProps[i]]) {
+        this[requiredProps[i]] = props[requiredProps[i]];
+      } else {
+        this.errors.push(`При создании объекта отсутствует обязательное поле ${props[requiredProps[i]]}`);
+      }
     }
     for (let i = 0; i < optionalProps.length; i++) {
       if (props[optionalProps[i]]) {
         this[optionalProps[i]] = props[optionalProps[i]];
       }
+    }
+
+    if (fi <= 0) {
+      this.errors.push('Относительная влажность не может быть менее либо равно 0 %');
+    } else if (fi > 100) {
+      this.errors.push('Относительная влажность не может быть более 100 %');
     }
   }
 

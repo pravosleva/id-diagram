@@ -35,16 +35,16 @@ Method | Arguments | Description
 👉 | `t` | temperature, C
 👉 | `fi` | relativities, %
 
-## ROAD MAP
+## Road Map
 
-Параметры произвольной точки на диаграмме `new TDPoint({ y, fi })`
-- [x] `TDPoint.get('t')`
-- [x] `TDPoint.get('fi')`
-- [x] `TDPoint.getHumidity()` _Влагосодержание / Humidity, g/kg dry air_
-- [x] `TDPoint.getEnthalpy()` _Энтальпия / Enthalpy, kJ/kg_
-- [x] `TDPoint.getTR()` _Точка росы / Dew Point Temperature, C_
-- [x] `TDPoint.getWBT()` _Температура мокрого термометра / Wet Bulb Temperature, C_
-_If Array.isArray(TDPoint.get('errors')) then this point is wrong. Check this._
+Параметры произвольной точки на диаграмме `const point = new TDPoint({ t: 28, fi: 43 })`
+- [x] `point.get('t')`
+- [x] `point.get('fi')`
+- [x] `point.getHumidity()` _Влагосодержание / Humidity, g/kg dry air_
+- [x] `point.getEnthalpy()` _Энтальпия / Enthalpy, kJ/kg_
+- [x] `point.getTR()` _Точка росы / Dew Point Temperature, C_
+- [x] `point.getWBT()` _Температура мокрого термометра / Wet Bulb Temperature, C_
+If `Array.isArray(point.get('errors'))` then this point is wrong. Check this.
 
 Вычисление термодинамических процессов.
 - [x] Heating
@@ -83,7 +83,7 @@ _To be continued..._
 - [x] `Formulas.getEnthalpyByParams0` by `({ t, fi })`
 - [x] `Formulas.getWBT` by `({ t, fi })`. Температура мокрого термометра по графику
 - [x] `Formulas.getTR0` by `({ t, fi })`. Точка росы по графику (более точный вариант - high accuracy)
-- [x] `Formulas.getTR1` by `({ t, fi })`. Точка росы по упрощенной формуле (упрощенная формула - low accuracy)
+- [x] `Formulas.getTR1` by `({ t, fi })`. Точка росы по упрощенной формуле (low accuracy)
 
 ## TODO: STEP 2. Wet Bulb Temperature.
 
