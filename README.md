@@ -44,7 +44,8 @@ Method | Arguments | Description
 - [x] `point.getEnthalpy()` _Энтальпия / Enthalpy, kJ/kg_
 - [x] `point.getTR()` _Точка росы / Dew Point Temperature, C_
 - [x] `point.getWBT()` _Температура мокрого термометра / Wet Bulb Temperature, C_
-If `Array.isArray(point.get('errors'))` then this point is wrong. Check this.
+
+If `point.get('errors').length > 0` then this point is wrong. Check this.
 
 Вычисление термодинамических процессов.
 - [x] Heating
