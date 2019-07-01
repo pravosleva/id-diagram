@@ -62,7 +62,7 @@ const pointAfterHeating = point.process({
 const finalFi = pointAfterHeating.get('fi');
 
 console.log(finalFi);
-// 37.592996573271044 // C
+// 37.592996573271044 // %
 ```
 - [ ] Cooling
 - [ ] Adiabatic cooling
