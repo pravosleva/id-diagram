@@ -1,7 +1,12 @@
 /* eslint-disable function-paren-newline, arrow-parens, padded-blocks, space-before-blocks, max-len, no-mixed-operators, no-shadow, object-curly-newline, no-plusplus */
+import {
+  linear,
+  // bilinear,
+} from 'interpolate-by-pravosleva';
 import Lines from './Lines';
 import Points from './Points';
 import { fi as fiPoints } from './points';
+
 
 export default class Formulas {
 
@@ -48,10 +53,17 @@ export default class Formulas {
     t, // C
     fi, // %
   }){
-    const enthalpyLine = Lines.getEnthalpyLine({ t, fi });
-    const d = Formulas.getHumidityByParams0({ t, fi });
+    // const temp = Lines.getConstEnthalpyLine({ t, fi });
+    const enthalpyLines = Lines.getEnthalpyLines(); // first -18, last 88 (kJ/kg)
+    const h = Formulas.getHumidityByParams0({ t, fi });
 
-    return enthalpyLine(d);
+    const y1 = -18;
+    const x1 = enthalpyLines[0](h);
+    const y2 = 88;
+    const x2 = enthalpyLines[enthalpyLines.length - 1](h);
+    const x = t;
+
+    return linear({ x, x1, y1, x2, y2 });
   }
 
   // ТЕМПЕРАТУРА ТОЧКИ РОСЫ (По графику), С
@@ -86,7 +98,7 @@ export default class Formulas {
     t, // C
     fi // %
   }){
-    const enthalpyLine = Lines.getEnthalpyLine({ t, fi });
+    const enthalpyLine = Lines.getConstEnthalpyLine({ t, fi });
     // console.log(enthalpyLine(5.6)); // Ok!
     // console.log(`t= ${t} / fi= ${fi} / e= ${enthalpyLine(5)}`);
 
@@ -119,5 +131,20 @@ export default class Formulas {
     // console.log(point); // Ok.
 
     return point.t;
+  }
+
+  // ВЛАЖНОСТЬ, %
+  // RELATIVITY, %
+  /* eslint-disable object-property-newline */
+  static getFi0({ t, h }) {
+    const lineFi100 = Lines.getBrokenLineByPoints(fiPoints['100']);
+    const lineFi10 = Lines.getBrokenLineByPoints(fiPoints['10']);
+    const t1 = lineFi100(h);
+    const t2 = lineFi10(h);
+    const result = linear({
+      x: t, x1: t2, y1: 10, x2: t1, y2: 100
+    });
+
+    return result;
   }
 }

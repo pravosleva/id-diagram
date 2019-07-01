@@ -35,6 +35,38 @@ Method | Arguments | Description
 👉 | `t` | temperature, C
 👉 | `fi` | relativities, %
 
+## ROAD MAP
+
+Параметры произвольной точки на диаграмме `new TDPoint({ y, fi })`
+- [x] `TDPoint.get('t')`
+- [x] `TDPoint.get('fi')`
+- [x] `TDPoint.getHumidity()` _Влагосодержание / Humidity, g/kg dry air_
+- [x] `TDPoint.getEnthalpy()` _Энтальпия / Enthalpy, kJ/kg_
+- [x] `TDPoint.getTR()` _Точка росы / Dew Point Temperature, C_
+- [x] `TDPoint.getWBT()` _Температура мокрого термометра / Wet Bulb Temperature, C_
+_If Array.isArray(TDPoint.get('errors')) then this point is wrong. Check this._
+
+Вычисление термодинамических процессов.
+- [x] Heating
+```javascript
+import { TDPoint } from 'id-diagram';
+
+const point = new TDPoint({ t: 28, fi: 50 });
+const pointAfterHeating = point.process({
+  type: 'heating',
+  finalParams: {
+    t: 50
+  }
+});
+const finalFi = pointAfterHeating.get('fi');
+
+console.log(finalFi);
+// 37.592996573271044 // C
+```
+- [ ] Cooling
+- [ ] Adiabatic cooling
+- [ ] _Others..._
+
 _To be continued..._
 
 ## TODO: STEP 1. Basis.
@@ -142,16 +174,6 @@ const tR1 = Formulas.getTR1({ t, fi });
 // 16.6 // C
 ```
 _To be continued..._
-
-## TODO: STEP 3. Processes.
-
-Вычисление термодинамических процессов.
-- [ ] `class TDPoint` как отдельная сущность
-- [ ] `TDPoint.heating()` from to
-- [ ] `TDPoint.cooling()` from to
-- [ ] Адиабатическое охлаждение
-- [ ] Пароувлажнение
-- [ ] _Прочие процессы..._
 
 ## Usage examples
 

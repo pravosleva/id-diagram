@@ -2,7 +2,8 @@ import { assert } from 'chai';
 import Immutable from 'immutable';
 import { getKB } from 'interpolate-by-pravosleva';
 
-import { Formulas, Lines, Points } from '../src';
+import { Formulas, Lines, Points, TDPoint } from '../src';
+
 
 describe('Awesome test.', () => {
   // it('1.1. Lines.getEnthalpyLines\ni= -18 kJ/kg; d= 3 g/kg', () => {
@@ -103,10 +104,10 @@ describe('Awesome test.', () => {
     assert(testedT.toFixed(2) === t.toFixed(2), `FuckUp :( testedT is ${testedT}; Should be ${t}`);
   });
 
-  it('3.2. Lines.getEnthalpyLine', () => {
+  it('3.2. Lines.getConstEnthalpyLine', () => {
     const t = -41;
     const fi = 50;
-    const enthalpyLine = Lines.getEnthalpyLine({ t, fi });
+    const enthalpyLine = Lines.getConstEnthalpyLine({ t, fi });
     const d = Formulas.getHumidityByParams0({ t, fi });
     const testedT = enthalpyLine(d);
 
@@ -290,4 +291,51 @@ describe('Awesome test.', () => {
   //
   //   assert(testedVal === expectedVal, `FuckUp :( testedVal is ${testedVal}; Should be ${expectedVal}`);
   // });
+
+  it('6.1 TDPoint.get(\'t\')', () => {
+    const point = new TDPoint({ t: 28, fi: 43 });
+    const expectedVal = 28;
+    const testedT = point.get('t');
+
+    assert(expectedVal === testedT, `FUCKUP: testedT is ${testedT}`)
+  });
+
+  it('6.2 TDPoint.process() HEATING', () => {
+    const point = new TDPoint({ t: 28, fi: 43 });
+    const testedHeatingProcess = point.process({
+      type: 'heating',
+      finalParams: {
+        t: 50
+      }
+    });
+    // const tAfter = testedHeatingProcess.get('t');
+    const expectedFiAfter = 37.592996573271044;
+    const testedFiAfter = testedHeatingProcess.get('fi');
+
+    assert(testedFiAfter === expectedFiAfter, `FUCKUP: testedFiAfter is ${testedFiAfter}`)
+  });
+
+  it('6.3 TDPoint.getEnthalpy()', () => {
+    const point = new TDPoint({ t: 28, fi: 43 });
+    const expectedEnthalpy = 53.95286230707845;
+    const testedEnthalpy = point.getEnthalpy();
+
+    assert(testedEnthalpy === expectedEnthalpy, `FUCKUP: testedEnthalpy is ${testedEnthalpy}`)
+  });
+
+  it('6.4 TDPoint.getTR()', () => {
+    const point = new TDPoint({ t: 28, fi: 43 });
+    const expectedTR = 14.266000848002328;
+    const testedTR = point.getTR();
+
+    assert(testedTR === expectedTR, `FUCKUP: testedTR is ${testedTR}`)
+  });
+
+  it('6.5 TDPoint.getWBT()', () => {
+    const point = new TDPoint({ t: 28, fi: 43 });
+    const expectedWBT = 19.030956508469423;
+    const testedWBT = point.getWBT();
+
+    assert(testedWBT === expectedWBT, `FUCKUP: testedWBT is ${testedWBT}`)
+  });
 });

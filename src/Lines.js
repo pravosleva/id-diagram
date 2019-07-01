@@ -126,7 +126,7 @@ export default class Lines {
 
   // ЭНТАЛЬПИЯ: ЛИНИЯ, ПРОХОДЯЩАЯ ЧЕРЕЗ ТОЧКУ { t, fi }
   // ENTHALPY: LINE FOR THE { t, fi }
-  static getEnthalpyLine({ t, fi }) {
+  static getConstEnthalpyLine({ t, fi }) {
     const d = Formulas.getHumidityByParams0({ t, fi });
 
     // console.log(d); // Ok!
