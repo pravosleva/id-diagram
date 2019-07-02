@@ -11,29 +11,26 @@ $ yarn add id-diagram
 Method | Arguments | Description
 ------------ | ------------- | -------------
 `Formulas.getHumidityByParams0` | | _g/kg dry air, (number)_
-👉 | `t` | temperature, C
-👉 | `fi` | relativities, %
+- | `t` | temperature, C
+- | `fi` | relativities, %
 `Formulas.getTemperatureByParams0` | | _C, (number)_
-👉 | `e` | enthalpy, kJ/kg
-👉 | `h` | humidity, g/kg dry air
+- | `e` | enthalpy, kJ/kg
+- | `h` | humidity, g/kg dry air
 `Formulas.getHumidityByParams1` | | _g/kg dry air, (number)_
-👉 | `e` | enthalpy, kJ/kg
-👉 | `t` | temperature, C
+- | `e` | enthalpy, kJ/kg
+- | `t` | temperature, C
 `Lines.getEnthalpyLine` | | _function_
-👉 | `t` | temperature, C
-👉 | `fi` | relativities, %
+- | `t` | temperature, C
+- | `fi` | relativities, %
 `Formulas.getEnthalpyByParams0` | | _kJ/kg (number)_
-👉 | `t` | temperature, C
-👉 | `fi` | relativities, %
+- | `t` | temperature, C
+- | `fi` | relativities, %
 `Formulas.getWBT` | | Wet Bulb Temperature, _C (number)_
-👉 | `t` | temperature, C
-👉 | `fi` | relativities, %
+- | `t` | temperature, C
+- | `fi` | relativities, %
 `Formulas.getTR0` | | Dew Point (RECOMMENDED), _C (number)_
-👉 | `t` | temperature, C
-👉 | `fi` | relativities, %
-`Formulas.getTR1` | | Dew Point (DEPRECATED: low accuracy), _C (number)_
-👉 | `t` | temperature, C
-👉 | `fi` | relativities, %
+- | `t` | temperature, C
+- | `fi` | relativities, %
 
 ## Road Map
 
@@ -63,6 +60,20 @@ const finalFi = pointAfterHeating.get('fi');
 
 console.log(finalFi);
 // 37.592996573271044 // %
+
+console.log(pointAfterHeating.processResult);
+/*
+{
+  DELTA_H: 19.701903411072525,
+  DELTA_E: 75.81706462959397,
+  DELTA_FI: -5.407003426728956
+  // TODO: Others...
+}
+*/
+
+// And also, we have access to parent point:
+console.log(pointAfterHeating.parentPoint.get('t'));
+// 28 // C
 ```
 - [ ] Cooling
 - [ ] Adiabatic cooling

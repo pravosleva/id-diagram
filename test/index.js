@@ -300,7 +300,7 @@ describe('Awesome test.', () => {
     assert(expectedVal === testedT, `FUCKUP: testedT is ${testedT}`)
   });
 
-  it('6.2 TDPoint.process() HEATING', () => {
+  it('6.2 TDPoint.process({ type: \'heating\' })', () => {
     const point = new TDPoint({ t: 28, fi: 43 });
     const testedHeatingProcess = point.process({
       type: 'heating',
@@ -337,5 +337,47 @@ describe('Awesome test.', () => {
     const testedWBT = point.getWBT();
 
     assert(testedWBT === expectedWBT, `FUCKUP: testedWBT is ${testedWBT}`)
+  });
+
+  it('6.6 TDPoint.process({ type: \'heating\' }) DELTA_H', () => {
+    const point = new TDPoint({ t: 28, fi: 43 });
+    const afterHeating = point.process({
+      type: 'heating',
+      finalParams: {
+        t: 50
+      }
+    });
+    const expectedDeltaH = 19.701903411072525;
+    const testedDeltaH = afterHeating.processResult.DELTA_H;
+
+    assert(testedDeltaH === expectedDeltaH, `FUCKUP: testedDeltaH is ${testedDeltaH}`)
+  });
+
+  it('6.7 TDPoint.process({ type: \'heating\' }) DELTA_FI', () => {
+    const point = new TDPoint({ t: 28, fi: 43 });
+    const afterHeating = point.process({
+      type: 'heating',
+      finalParams: {
+        t: 50
+      }
+    });
+    const expectedDeltaFi = -5.407003426728956;
+    const testedDeltaFi = afterHeating.processResult.DELTA_FI;
+
+    assert(testedDeltaFi === expectedDeltaFi, `FUCKUP: testedDeltaFi is ${testedDeltaFi}`)
+  });
+
+  it('6.8 TDPoint.process({ type: \'cooling\' }) fi', () => {
+    const point = new TDPoint({ t: 28, fi: 43 });
+    const afterCooling = point.process({
+      type: 'cooling',
+      finalParams: {
+        t: 12
+      }
+    });
+    const expectedFi = 99.99992574886151;
+    const testedFi = afterCooling.get('fi');
+
+    assert(testedFi === expectedFi, `FUCKUP: testedFi is ${testedFi}`)
   });
 });
