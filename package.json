@@ -1,7 +1,7 @@
 {
   "name": "id-diagram",
-  "version": "2.0.5",
-  "description": "id-diagram methods",
+  "version": "2.0.6",
+  "description": "Wet air HVAC calc",
   "main": "./lib/index.js",
   "scripts": {
     "clean": "rimraf lib",

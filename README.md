@@ -65,7 +65,7 @@ console.log(pointAfterHeating.processResult);
 // { DELTA_H: 19.701903411072525,
 //   DELTA_E: 75.81706462959397,
 //   DELTA_FI: -5.407003426728956
-//   /* TODO: Скрытая энергия конденсации */ }
+//   /* TODO: Скрытая энергия конденсации для процесса охлаждения */ }
 
 // And also, we have access to parent point:
 console.log(pointAfterHeating.parentPoint.get('t'));
