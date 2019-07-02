@@ -45,7 +45,7 @@ Method | Arguments | Description
 If `point.get('errors').length > 0` then this point is wrong. Check this.
 
 Вычисление термодинамических процессов.
-- [x] Heating
+- [x] HEATING
 ```javascript
 import { TDPoint } from 'id-diagram';
 
@@ -62,22 +62,19 @@ console.log(finalFi);
 // 37.592996573271044 // %
 
 console.log(pointAfterHeating.processResult);
-/*
-{
-  DELTA_H: 19.701903411072525,
-  DELTA_E: 75.81706462959397,
-  DELTA_FI: -5.407003426728956
-  // TODO: Others...
-}
-*/
+// { DELTA_H: 19.701903411072525,
+//   DELTA_E: 75.81706462959397,
+//   DELTA_FI: -5.407003426728956
+//   /* TODO: Скрытая энергия конденсации */ }
 
 // And also, we have access to parent point:
 console.log(pointAfterHeating.parentPoint.get('t'));
 // 28 // C
 ```
-- [ ] Cooling
-- [ ] Adiabatic cooling
-- [ ] _Others..._
+- [ ] COOLING (Should be tested)
+- [ ] DRYING
+- [ ] MIXING
+- [ ] _Others_
 
 _To be continued..._
 
