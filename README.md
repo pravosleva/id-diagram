@@ -40,7 +40,8 @@ Method | Arguments | Description
 
 ## Road Map
 
-Параметры произвольной точки на диаграмме `const point = new TDPoint({ t: 28, fi: 43 })`
+1. Параметры произвольной точки на диаграмме `const point = new TDPoint({ t: 28, fi: 43 })`
+
 - [x] `point.get('t')`
 - [x] `point.get('fi')`
 - [x] `point.getHumidity()` _Влагосодержание / Humidity, g/kg dry air_
@@ -50,7 +51,8 @@ Method | Arguments | Description
 
 If `point.get('errors').length > 0` then this point is wrong. Check this.
 
-Вычисление термодинамических процессов.
+2. Вычисление термодинамических процессов.
+
 - [x] HEATING // Изобарный нагрев / Isobaric heating; h= const;
 ```javascript
 import { TDPoint } from 'id-diagram';
@@ -96,21 +98,28 @@ console.log(pointAfterCooling.processResult);
 ```javascript
 import { TDPoint } from 'id-diagram';
 
-const point = new TDPoint({ t: 28, fi: 50 });
-const pointAfter2 = point.process({
+const point1 = new TDPoint({ t: 28, fi: 50 });
+const point2a = point1.process({
   type: 'adiabatic',
   finalParams: { t: 22 }
 });
-const finalFi2 = pointAfter2.get('fi');
-const pointAfter3 = point.process({
+const finalFi2a = point2a.get('fi');
+
+console.log(finalFi2a);
+// TODO: Should be tested.
+
+console.log(point2a.processResult);
+// TODO: Should be tested.
+
+const point2b = point.process({
   type: 'adiabatic',
   finalParams: { fi: 85 }
 });
 
-console.log(finalFi2);
+console.log(finalFi2b);
 // TODO: Should be tested.
 
-console.log(pointAfter2.processResult);
+console.log(point2b.processResult);
 // TODO: Should be tested.
 ```
 - [ ] _Others_
