@@ -1,23 +1,10 @@
 <div align="center">
-  <a href="https://selection4test.ru">
-    <img height="35" src="https://avatars0.githubusercontent.com/u/19761493?s=460&v=4" />
-  </a>
-
-<br /><br />
-
-<strong>id-diagram</strong>
-
   <p align="center">
-    <a href="https://t.me/hvac_ru">
-      <img src="https://avatars0.githubusercontent.com/u/19761493?s=460&v=4" alt="HVAC group on Telegram" />
-    </a>
-    <a href="http://selection4test.ru:1350">
-      <img src="https://avatars0.githubusercontent.com/u/19761493?s=460&v=4" alt="Simple chat =)" />
-    </a>
+    <a href="https://t.me/hvac_ru">HVAC group on Telegram</a>
   </p>
 </div>
 
-#
+# id-diagram
 
 ## Install
 
