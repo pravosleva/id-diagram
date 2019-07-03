@@ -1,4 +1,23 @@
-# id-diagram
+<div align="center">
+  <a href="https://selection4test.ru">
+    <img height="35" src="https://avatars0.githubusercontent.com/u/19761493?s=460&v=4" />
+  </a>
+
+<br /><br />
+
+<strong>id-diagram</strong>
+
+  <p align="center">
+    <a href="https://t.me/hvac_ru">
+      <img src="https://avatars0.githubusercontent.com/u/19761493?s=460&v=4" alt="HVAC group on Telegram" />
+    </a>
+    <a href="http://selection4test.ru:1350">
+      <img src="https://avatars0.githubusercontent.com/u/19761493?s=460&v=4" alt="Simple chat =)" />
+    </a>
+  </p>
+</div>
+
+#
 
 ## Install
 
@@ -45,16 +64,14 @@ Method | Arguments | Description
 If `point.get('errors').length > 0` then this point is wrong. Check this.
 
 Вычисление термодинамических процессов.
-- [x] HEATING
+- [x] HEATING // Изобарный нагрев / Isobaric heating; h= const;
 ```javascript
 import { TDPoint } from 'id-diagram';
 
 const point = new TDPoint({ t: 28, fi: 50 });
 const pointAfterHeating = point.process({
   type: 'heating',
-  finalParams: {
-    t: 50
-  }
+  finalParams: { t: 50 }
 });
 const finalFi = pointAfterHeating.get('fi');
 
@@ -64,16 +81,51 @@ console.log(finalFi);
 console.log(pointAfterHeating.processResult);
 // { DELTA_H: 19.701903411072525,
 //   DELTA_E: 75.81706462959397,
-//   DELTA_FI: -5.407003426728956
-//   /* TODO: Скрытая энергия конденсации для процесса охлаждения */ }
+//   DELTA_FI: -5.407003426728956 }
+//   /* TODO: Скрытая энергия конденсации для процесса охлаждения */
 
 // And also, we have access to parent point:
 console.log(pointAfterHeating.parentPoint.get('t'));
 // 28 // C
 ```
 - [ ] COOLING (Should be tested)
-- [ ] DRYING
-- [ ] MIXING
+```javascript
+import { TDPoint } from 'id-diagram';
+
+const point = new TDPoint({ t: 28, fi: 50 });
+const pointAfterCooling = point.process({
+  type: 'cooling',
+  finalParams: { t: 20 }
+});
+const finalFi = pointAfterCooling.get('fi');
+
+console.log(finalFi);
+// TODO: Should be tested.
+
+console.log(pointAfterCooling.processResult);
+// TODO: Should be tested.
+```
+- [ ] ADIABATIC (Should be tested) // e= const
+```javascript
+import { TDPoint } from 'id-diagram';
+
+const point = new TDPoint({ t: 28, fi: 50 });
+const pointAfter2 = point.process({
+  type: 'adiabatic',
+  finalParams: { t: 22 }
+});
+const finalFi2 = pointAfter2.get('fi');
+const pointAfter3 = point.process({
+  type: 'adiabatic',
+  finalParams: { fi: 85 }
+});
+
+console.log(finalFi2);
+// TODO: Should be tested.
+
+console.log(pointAfter2.processResult);
+// TODO: Should be tested.
+```
 - [ ] _Others_
 
 _To be continued..._

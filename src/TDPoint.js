@@ -1,4 +1,5 @@
 /* eslint-disable no-plusplus, max-len */
+import { linear } from 'interpolate-by-pravosleva';
 import Formulas from './Formulas';
 import { fi as fiPoints } from './points';
 import Points from './Points';
@@ -49,6 +50,8 @@ class TDPoint {
 
     // Расчетные параметры текущей позиции на диаграмме
     const h = this.getHumidity();
+    const pointsFi100 = fiPoints['100'];
+    const tWB = Lines.getBrokenLineByPoints(pointsFi100)(h);
 
     switch (type) {
       // [x] 1. HEATING: Направление процесса вертикально вверх
@@ -58,7 +61,8 @@ class TDPoint {
         Количество тепла, необходимое для изобарного нагрева равно разнице
         энтальпий: q= e2 - e1 // кДж/кг с.в.
       */
-      case 'heating':
+      case 'heating': // Isobaric heating
+        // finalParams.t isRequired
         if (finalParams && finalParams.t) {
           const newT = finalParams.t;
 
@@ -97,18 +101,18 @@ class TDPoint {
         q= h6 - h3 // г/кг с.в.
       */
       case 'cooling':
+        // finalParams.t isRequired
         if (finalParams && finalParams.t) {
           if (finalParams.t < this.get('t')) {
             const newT = finalParams.t;
-            const pointsFi100 = fiPoints['100'];
-            const tFi100 = Lines.getBrokenLineByPoints(pointsFi100)(h);
 
-            if (tFi100 <= finalParams.t) {
+            if (tWB <= finalParams.t) {
               // [x] 2.1. Перпендикулярная линия не пересекается с кривой насыщения
               // скрытая энергия равна 0
               newPoint = new TDPoint({
                 t: newT,
                 fi: Formulas.getFi0({ t: newT, h }), // h is const
+                errors,
                 parentPoint: this
               });
               newPoint.processResult = this.getProcessResultObj({ endPoint: newPoint });
@@ -117,8 +121,9 @@ class TDPoint {
               // TODO: Should be tested!
               // [x] 2.2.1 До точки насыщения
               const newPoint0 = new TDPoint({
-                t: tFi100,
-                fi: Formulas.getFi0({ t: tFi100, h }), // Should be 100 %
+                t: tWB,
+                fi: Formulas.getFi0({ t: tWB, h }), // Should be 100 %
+                errors,
                 parentPoint: this
               });
 
@@ -133,7 +138,7 @@ class TDPoint {
               const newH = commonPoint.h;
               const newFi = Formulas.getFi0({ t: newT, h: newH });
 
-              newPoint = new TDPoint({ t: newT, fi: newFi, parentPoint: newPoint0 });
+              newPoint = new TDPoint({ t: newT, fi: newFi, errors, parentPoint: newPoint0 });
               newPoint.processResult = this.getProcessResultObj({ startPoint: newPoint0, endPoint: newPoint });
             }
             result = newPoint;
@@ -159,11 +164,69 @@ class TDPoint {
         }
         break;
 
-      // [ ] 3. DRYING: Осушение
+      // [ ] 3. ADIABATIC (e= const)
+      // TODO: test
+      case 'adiabatic': // Осушение по линии постоянной энтальпии
+        if (finalParams && finalParams.t) {
+          // [ ] 3.1 Известна заданная конечная температура
+          // finalParams.t isRequired
+          const newT = finalParams.t;
+          const newFi = Formulas.getFi0({
+            t: newT,
+            h: linear({ x: newT, x1: this.t, y1: this.fi, x2: tWB, y2: 100 })
+          });
 
-      // [ ] 4. MIXING: Смешивание
+          if (tWB <= finalParams.t) {
+            // [x] 3.1.1 Если newT >= tWB мокрого термометра, найдем нужную точку
+            newPoint = new TDPoint({
+              t: newT,
+              fi: newFi,
+              errors,
+              parentPoint: this
+            });
+            newPoint.processResult = this.getProcessResultObj({ endPoint: newPoint });
+            result = newPoint;
+          } else {
+            // [x] 3.1.2 Если нет, придется остановиться на tWB
+            newPoint = new TDPoint({ t: tWB, fi: 100, errors, parentPoint: this });
+            newPoint.processResult = this.getProcessResultObj({ endPoint: newPoint });
+            result = newPoint;
+          }
+        } else if (finalParams && finalParams.fi) {
+          // [ ] 3.2 Известна заданная конечная влажность
+          // finalParams.fi isRequired
+          const newFi = finalParams.fi;
+
+          if (newFi < 0) {
+            errors.push('FUCKUP: Зачем указывать влажность менее 0?');
+            result = new TDPoint({ t: this.t, fi: this.fi, errors, parentPoint: this });
+          } else if (newFi <= 100 && newFi > 0) {
+            // [ ] 3.2.1 Если конечная влажность <= 100 %, найдем нужную точку
+            const newT = linear({ x: finalParams.fi, x1: this.fi, y1: this.t, x2: 100, y2: tWB });
+
+            newPoint = new TDPoint({ t: newT, fi: newFi, errors, parentPoint: this });
+            newPoint.processResult = this.getProcessResultObj({ endPoint: newPoint });
+            result = newPoint;
+          } else {
+            // [x] 3.2.2 Если нет, придется остановиться на tWB
+            newPoint = new TDPoint({ t: tWB, fi: 100, errors, parentPoint: this });
+            newPoint.processResult = this.getProcessResultObj({ endPoint: newPoint });
+            result = newPoint;
+          }
+        } else {
+          errors.push('ERROR: TDPoint.process');
+          errors.push('Параметры finalParams.t or finalParams.fi не переданы для процесса adiabatic');
+          result = new TDPoint({
+            t: this.t,
+            fi: this.fi,
+            errors,
+            parentPoint: this
+          });
+        }
+        break;
 
       // [ ] Others...
+
       default:
         errors.push('ERROR: TDPoint.process');
         errors.push(`Нет описания для type= ${type}`);
