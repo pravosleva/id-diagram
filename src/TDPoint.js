@@ -1,4 +1,4 @@
-/* eslint-disable no-plusplus, max-len */
+/* eslint-disable no-plusplus, max-len, object-curly-newline */
 import { linear } from 'interpolate-by-pravosleva';
 import Formulas from './Formulas';
 import { fi as fiPoints } from './points';
