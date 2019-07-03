@@ -2,7 +2,7 @@
 
 <div align="center">
   <p align="center">
-    <a href="https://t.me/hvac_ru" styles="lihe-height: 30px; border-radius: 15px; border: 1px solid rgb(3, 102, 214);">HVAC group on Telegram</a>
+    <a href="https://t.me/hvac_ru">HVAC group on Telegram</a>
   </p>
 </div>
 
@@ -13,7 +13,7 @@ $ yarn add id-diagram
 ```
 
 ## Documentation
-```
+```javascript
 import { TDPoint } from 'id-diagram';
 
 const point = new TDPoint({ t: 28, fi: 43 });
@@ -96,40 +96,6 @@ console.log(point2b.processResult);
 ```
 - [ ] _Others_
 
-_To be continued..._
-
-## Usage examples
-
-```javascript
-import { Formulas, Points, Lines } from 'id-diagram';
-
-const d0 = Formulas.getHumidityByParams0({
-  t: 15, // temperature (C)
-  fi: 10, // relativities (%)
-  barometricPressure: 101.325, // BP (kPa), optional param= 101.325 by default
-}); // (g/kg of dry air)
-
-console.log(d0);
-// 1.048908791886
-
-const d1 = Formulas.getHumidityByParams1({
-  e: 25, // enthalpy (kJ/kg)
-  t: 12.310041624590525, // temperature (C)
-}); // (g/kg of dry air)
-
-console.log(d1);
-// 5.000000000000001
-
-const t0 = Formulas.getTemperatureByParams0({
-  e: 25, // enthalpy (kJ/kg)
-  h: 5, // humidity (g/kg of dry air)
-}); // (C)
-
-console.log(t0);
-// 12.310041624590525
-
-// Something else...
-```
 _To be continued..._
 
 ## Commands

@@ -103,3 +103,37 @@ const tR1 = Formulas.getTR1({ t, fi });
 // 16.6 // C
 ```
 _To be continued..._
+
+## Usage examples
+
+```javascript
+import { Formulas, Points, Lines } from 'id-diagram';
+
+const d0 = Formulas.getHumidityByParams0({
+  t: 15, // temperature (C)
+  fi: 10, // relativities (%)
+  barometricPressure: 101.325, // BP (kPa), optional param= 101.325 by default
+}); // (g/kg of dry air)
+
+console.log(d0);
+// 1.048908791886
+
+const d1 = Formulas.getHumidityByParams1({
+  e: 25, // enthalpy (kJ/kg)
+  t: 12.310041624590525, // temperature (C)
+}); // (g/kg of dry air)
+
+console.log(d1);
+// 5.000000000000001
+
+const t0 = Formulas.getTemperatureByParams0({
+  e: 25, // enthalpy (kJ/kg)
+  h: 5, // humidity (g/kg of dry air)
+}); // (C)
+
+console.log(t0);
+// 12.310041624590525
+
+// Something else...
+```
+_To be continued..._
