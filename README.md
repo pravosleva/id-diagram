@@ -40,7 +40,7 @@ Method | Arguments | Description
 
 ## Road Map
 
-1. Параметры произвольной точки на диаграмме `const point = new TDPoint({ t: 28, fi: 43 })`
+> Параметры произвольной точки на диаграмме `const point = new TDPoint({ t: 28, fi: 43 })`
 
 - [x] `point.get('t')`
 - [x] `point.get('fi')`
@@ -51,7 +51,7 @@ Method | Arguments | Description
 
 If `point.get('errors').length > 0` then this point is wrong. Check this.
 
-2. Вычисление термодинамических процессов.
+> Вычисление термодинамических процессов.
 
 - [x] HEATING // Изобарный нагрев / Isobaric heating; h= const;
 ```javascript
