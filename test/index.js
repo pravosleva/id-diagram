@@ -367,17 +367,24 @@ describe('Awesome test.', () => {
     assert(testedDeltaFi === expectedDeltaFi, `FUCKUP: testedDeltaFi is ${testedDeltaFi}`)
   });
 
-  it('6.8 TDPoint.process({ type: \'cooling\' }) fi', () => {
+  it('6.8 TDPoint.process({ type: \'cooling\' }) h', () => {
     const point = new TDPoint({ t: 28, fi: 43 });
     const afterCooling = point.process({
       type: 'cooling',
-      finalParams: {
-        t: 12
-      }
+      finalParams: { t: 20 }
     });
-    const expectedFi = 99.99992574886151;
-    const testedFi = afterCooling.get('fi');
+    const expectedH = 13.19970111553801;
+    const testedH = afterCooling.getHumidity();
 
-    assert(testedFi === expectedFi, `FUCKUP: testedFi is ${testedFi}`)
+    // Пройденная точка росы:
+    console.log(afterCooling.parentPoint.get('t')); // Ok!
+
+    // Конечная влажность:
+    console.log(afterCooling.get('fi')); // Ok!
+
+    // Результат последнего процесса:
+    console.log(afterCooling.processResult); // Ok!
+
+    assert(testedH === expectedH, `FUCKUP: testedH is ${testedH}`)
   });
 });

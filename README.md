@@ -16,27 +16,29 @@ $ yarn add id-diagram
 ```javascript
 import { TDPoint } from 'id-diagram';
 
-const point = new TDPoint({ t: 28, fi: 43 });
+const point1 = new TDPoint({ t: 28, fi: 43 });
 ```
 
 ## Road Map
 
 ### Параметры произвольной точки на диаграмме
 
-- [x] `point.get('t')`
-- [x] `point.get('fi')`
-- [x] `point.getHumidity()` _Влагосодержание / Humidity, g/kg dry air_
-- [x] `point.getEnthalpy()` _Энтальпия / Enthalpy, kJ/kg_
-- [x] `point.getTR()` _Точка росы / Dew Point Temperature, C_
-- [x] `point.getWBT()` _Температура мокрого термометра / Wet Bulb Temperature, C_
+- [x] `point1.get('t')`
+- [x] `point1.get('fi')`
+- [x] `point1.getHumidity()` _Влагосодержание / Humidity, g/kg dry air_
+- [x] `point1.getEnthalpy()` _Энтальпия / Enthalpy, kJ/kg_
+- [x] `point1.getTR()` _Точка росы / Dew Point Temperature, C_
+- [x] `point1.getWBT()` _Температура мокрого термометра / Wet Bulb Temperature, C_
 
 > If `point.get('errors').length > 0` then this point is wrong. Check this.
 
 ### Вычисление термодинамических процессов.
-
+<div style="display: flex; justify-content: center;">
+  <img src="./img/id-diagram-B1-B5-950x785.png" alt="Processes" />
+</div>
 - [x] HEATING // Изобарный нагрев / Isobaric heating; h= const;
 ```javascript
-const pointAfterHeating = point.process({
+const pointAfterHeating = point1.process({
   type: 'heating',
   finalParams: { t: 50 }
 });
@@ -49,25 +51,27 @@ console.log(pointAfterHeating.processResult);
 // { DELTA_H: 19.701903411072525,
 //   DELTA_E: 75.81706462959397,
 //   DELTA_FI: -5.407003426728956 }
-//   /* TODO: Скрытая энергия конденсации для процесса охлаждения */
 
 // And also, we have access to parent point:
 console.log(pointAfterHeating.parentPoint.get('t'));
 // 28 // C
 ```
-- [ ] COOLING (Should be tested)
+- [x] COOLING
 ```javascript
-const pointAfterCooling = point.process({
+const point3 = point1.process({
   type: 'cooling',
   finalParams: { t: 20 }
 });
-const finalFi = pointAfterCooling.get('fi');
 
-console.log(finalFi);
-// TODO: Should be tested.
+console.log(point3.get('fi'));
+// 89.98595978005515 // %
 
-console.log(pointAfterCooling.processResult);
-// TODO: Should be tested.
+console.log(point3.processResult);
+// { DELTA_H: 3.048618541440435,
+//   DELTA_E: -0.825783743099322,
+//   DELTA_FI: 46.985959780055154 }
+
+const point2 = point3.parentPoint; // До прохождения точки росы (начала конденсации)
 ```
 - [ ] ADIABATIC (Should be tested) // e= const
 ```javascript
@@ -83,7 +87,7 @@ console.log(finalFi2a);
 console.log(point2a.processResult);
 // TODO: Should be tested.
 
-const point2b = point.process({
+const point2b = point1.process({
   type: 'adiabatic',
   finalParams: { fi: 85 }
 });
