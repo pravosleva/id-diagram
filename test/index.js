@@ -377,13 +377,16 @@ describe('Awesome test.', () => {
     const testedH = afterCooling.getHumidity();
 
     // Пройденная точка росы:
-    console.log(afterCooling.parentPoint.get('t')); // Ok!
+    // console.log(afterCooling.parentPoint.get('t')); // Ok!
 
     // Конечная влажность:
-    console.log(afterCooling.get('fi')); // Ok!
+    // console.log(afterCooling.get('fi'));
+
+    // Конечная t:
+    // console.log(afterCooling.get('t'));
 
     // Результат последнего процесса:
-    console.log(afterCooling.processResult); // Ok!
+    // console.log(afterCooling.processResult); // Ok!
 
     assert(testedH === expectedH, `FUCKUP: testedH is ${testedH}`)
   });
