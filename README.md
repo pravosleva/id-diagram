@@ -54,14 +54,29 @@ console.log(pointB2.processResult);
 console.log(pointB2.parentPoint.get('t'));
 // 28 // C
 ```
-- [x] COOLING
+- [ ] COOLING
 ```javascript
+// CASE 1: Без конденсации
+const pointB3 = pointB1.process({
+  type: 'cooling',
+  finalParams: { t: 25 }
+});
+
+console.log(pointB3.get('t'));
+// 81.25379924559114 // %, при определении графически, имеется погрешность (не 100 как в идеальном варианте)
+
+console.log(pointB3.processResult);
+// { DELTA_H: 6.077185254119282, // Влагосодержание определяется аналитически, поэтому есть погрешность
+//   DELTA_E: 12.17116345682976,
+//   DELTA_FI: 38.25379924559114 }
+
+// CASE 2: С конденсацией
 const pointB5 = pointB1.process({
   type: 'cooling',
   finalParams: { t: 20 }
 });
 
-console.log(pointB5.processResult);
+console.log(pointB5.processResult); // Разница между B4 и B5
 // { DELTA_H: 3.048618541440435,
 //   DELTA_E: -0.825783743099322,
 //   DELTA_FI: 46.985959780055154 }
