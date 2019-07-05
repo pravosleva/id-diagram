@@ -17,6 +17,11 @@ $ yarn add id-diagram
 import { TDPoint } from 'id-diagram';
 
 const pointB1 = new TDPoint({ t: 28, fi: 43 });
+
+const h1 = pointB1.getHumidity(); // g/kg
+const e1 = pointB1.getEnthalpy(); // kJ/kg
+const tWB1 = pointB1.getTWB(); // C
+const tR1 = pointB1.getTR(); // C
 ```
 
 ## Road Map
@@ -54,7 +59,7 @@ console.log(pointB2.processResult);
 console.log(pointB2.parentPoint.get('t'));
 // 28 // C
 ```
-- [ ] COOLING
+- [ ] COOLING (Should be tested)
 ```javascript
 // CASE 1: Без конденсации
 const pointB3 = pointB1.process({
@@ -73,7 +78,7 @@ console.log(fi3); // 81.25379924559114 // %
 console.log(h3); // 16.228267828216858 // g/kg
 console.log(e3); // 66.12402576390821 // kJ/kg
 console.log(resultB1B3);
-// { DELTA_H: 6.077185254119282, // TODO: WTF?
+// { DELTA_H: 0
 //   DELTA_E: 12.17116345682976,
 //   DELTA_FI: 38.25379924559114 }
 
@@ -104,6 +109,9 @@ const point2a = pointB1.process({
   type: 'adiabatic',
   finalParams: { t: 22 }
 });
+// Кстати, уменьшение температуры по линии энтальпии не может быть ниже
+// температурвы мокрого термометра - должна быть возврашена точка tWB на кривой
+// насыщения
 const finalFi2a = point2a.get('fi');
 
 console.log(finalFi2a);

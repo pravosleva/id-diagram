@@ -128,6 +128,8 @@ class TDPoint {
               });
 
               newPoint0.processResult = this.getProcessResultObj({ endPoint: newPoint0 });
+              newPoint0.processResult.DELTA_H = 0; // Вычисляется аналитически с
+              // погрешностью, поэтому обнуляем принудительно
 
               // [x] 2.2.2 После насыщения
               // Ищем пересечение заданной конечной t с кривой насыщения
