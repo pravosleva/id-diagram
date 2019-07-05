@@ -51,7 +51,8 @@ class TDPoint {
     // Расчетные параметры текущей позиции на диаграмме
     const h = this.getHumidity();
     const pointsFi100 = fiPoints['100'];
-    const tWB = Lines.getBrokenLineByPoints(pointsFi100)(h);
+    const tR = Lines.getBrokenLineByPoints(pointsFi100)(h);
+    const tWB = this.getWBT();
 
     switch (type) {
       // [x] 1. HEATING: Направление процесса вертикально вверх
@@ -106,7 +107,7 @@ class TDPoint {
           if (finalParams.t < this.get('t')) {
             const newT = finalParams.t;
 
-            if (tWB <= finalParams.t) {
+            if (tR <= finalParams.t) {
               // [x] 2.1. Перпендикулярная линия не пересекается с кривой насыщения
               // скрытая энергия равна 0
               newPoint = new TDPoint({
@@ -116,20 +117,22 @@ class TDPoint {
                 parentPoint: this
               });
               newPoint.processResult = this.getProcessResultObj({ endPoint: newPoint });
+              // Вычисляется аналитически с
+              // погрешностью, поэтому обнуляем принудительно
+              newPoint.processResult.DELTA_H = 0;
             } else {
               // [ ] 2.2. Нужно вычислить скрытую теплоту на конденсацию
               // TODO: Should be tested!
               // [x] 2.2.1 До точки насыщения
               const newPoint0 = new TDPoint({
-                t: tWB,
-                fi: Formulas.getFi0({ t: tWB, h }), // Should be 100 %
+                t: tR,
+                fi: Formulas.getFi0({ t: tR, h }), // Should be 100 %
                 errors,
                 parentPoint: this
               });
 
               newPoint0.processResult = this.getProcessResultObj({ endPoint: newPoint0 });
-              newPoint0.processResult.DELTA_H = 0; // Вычисляется аналитически с
-              // погрешностью, поэтому обнуляем принудительно
+              newPoint0.processResult.DELTA_H = 0;
 
               // [x] 2.2.2 После насыщения
               // Ищем пересечение заданной конечной t с кривой насыщения
