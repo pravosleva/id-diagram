@@ -62,11 +62,18 @@ const pointB3 = pointB1.process({
   finalParams: { t: 25 }
 });
 
-console.log(pointB3.get('t'));
-// 81.25379924559114 // %
+const t3 = pointB3.get('t');
+const fi3 = pointB3.get('fi');
+const h3 = pointB3.getHumidity();
+const e3 = pointB3.getEnthalpy();
+const resultB1B3 = pointB3.processResult;
 
-console.log(pointB3.processResult);
-// { DELTA_H: 6.077185254119282, // Влагосодержание определяется аналитически, поэтому есть погрешность
+console.log(t3); // 25 // С
+console.log(fi3); // 81.25379924559114 // %
+console.log(h3); // 16.228267828216858 // g/kg
+console.log(e3); // 66.12402576390821 // kJ/kg
+console.log(resultB1B3);
+// { DELTA_H: 6.077185254119282, // TODO: WTF?
 //   DELTA_E: 12.17116345682976,
 //   DELTA_FI: 38.25379924559114 }
 
@@ -76,12 +83,20 @@ const pointB5 = pointB1.process({
   finalParams: { t: 20 }
 });
 
-console.log(pointB5.processResult); // Разница между B4 и B5
+const t5 = pointB5.get('t');
+const fi5 = pointB5.get('fi');
+const h5 = pointB5.getHumidity();
+const e5 = pointB5.getEnthalpy();
+const resultB1B5 = pointB5.processResult;
+
+console.log(t5); // 20 // С
+console.log(fi5); // 89.98595978005515 // %
+console.log(h5); // 13.19970111553801 // g/kg
+console.log(e5); // 53.127078563979126 // kJ/kg
+console.log(resultB1B5);
 // { DELTA_H: 3.048618541440435,
 //   DELTA_E: -0.825783743099322,
 //   DELTA_FI: 46.985959780055154 }
-
-const pointB4 = pointB5.parentPoint; // Точка росы (начало конденсации)
 ```
 - [ ] ADIABATIC (Should be tested) // e= const
 ```javascript
