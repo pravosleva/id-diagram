@@ -1,6 +1,6 @@
 {
   "name": "id-diagram",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Wet air HVAC calc. Расчет состояний влажного воздуха.",
   "main": "./lib/index.js",
   "scripts": {

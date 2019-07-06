@@ -20,7 +20,7 @@ const pointB1 = new TDPoint({ t: 28, fi: 43 });
 
 const h1 = pointB1.getHumidity(); // g/kg
 const e1 = pointB1.getEnthalpy(); // kJ/kg
-const tWB1 = pointB1.getTWB(); // C
+const tWB1 = pointB1.getWBT(); // C
 const tR1 = pointB1.getDPT(); // C
 ```
 
