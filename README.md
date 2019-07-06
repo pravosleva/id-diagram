@@ -2,7 +2,7 @@
 
 <div align="center">
   <p align="center">
-    <a href="https://t.me/hvac_ru">HVAC RU community in Telegram</a>
+    <a href="https://tlgg.ru/hvac_ru">HVAC RU community in Telegram</a>
   </p>
 </div>
 
