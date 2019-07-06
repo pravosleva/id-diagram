@@ -2,7 +2,7 @@
 
 <div align="center">
   <p align="center">
-    <a href="https://t.me/hvac_ru">HVAC group on Telegram</a>
+    <a href="https://t.me/hvac_ru">HVAC RU community in Telegram</a>
   </p>
 </div>
 
@@ -21,18 +21,19 @@ const pointB1 = new TDPoint({ t: 28, fi: 43 });
 const h1 = pointB1.getHumidity(); // g/kg
 const e1 = pointB1.getEnthalpy(); // kJ/kg
 const tWB1 = pointB1.getTWB(); // C
-const tR1 = pointB1.getTR(); // C
+const tR1 = pointB1.getDPT(); // C
 ```
 
 ## Road Map
 
-### Параметры произвольной точки на диаграмме
+### Параметры точки
+> Точка росы и температура мокрого термометра определяются по линиям
 
 - [x] `pointB1.get('t')`
 - [x] `pointB1.get('fi')`
 - [x] `pointB1.getHumidity()` _Влагосодержание / Humidity, g/kg dry air_
 - [x] `pointB1.getEnthalpy()` _Энтальпия / Enthalpy, kJ/kg_
-- [x] `pointB1.getTR()` _Точка росы / Dew Point Temperature, C_
+- [x] `pointB1.getDPT()` _Точка росы / Dew Point Temperature, C_
 - [x] `pointB1.getWBT()` _Температура мокрого термометра / Wet Bulb Temperature, C_
 
 > If `point.get('errors').length > 0` then this point is wrong. Check this.
@@ -110,8 +111,8 @@ const point2a = pointB1.process({
   finalParams: { t: 22 }
 });
 // Кстати, уменьшение температуры по линии энтальпии не может быть ниже
-// температурвы мокрого термометра - должна быть возврашена точка tWB на кривой
-// насыщения
+// температуры мокрого термометра - будет возвращена точка tWB, соответствующая
+// минимально возможной температуре при изоэнтальпийном процессе.
 const finalFi2a = point2a.get('fi');
 
 console.log(finalFi2a);

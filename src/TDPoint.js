@@ -68,7 +68,7 @@ class TDPoint {
           const newT = finalParams.t;
 
           // 1. Найти newFi by (h, newT) графически
-          const newFi = Formulas.getFi0({ t: newT, h }); // h is const
+          const newFi = Lines.getFi({ t: newT, h }); // h is const
 
           newPoint = new TDPoint({
             t: newT,
@@ -112,7 +112,7 @@ class TDPoint {
               // скрытая энергия равна 0
               newPoint = new TDPoint({
                 t: newT,
-                fi: Formulas.getFi0({ t: newT, h }), // h is const
+                fi: Lines.getFi({ t: newT, h }), // h is const
                 errors,
                 parentPoint: this
               });
@@ -126,7 +126,7 @@ class TDPoint {
               // [x] 2.2.1 До точки насыщения
               const newPoint0 = new TDPoint({
                 t: tR,
-                fi: Formulas.getFi0({ t: tR, h }), // Should be 100 %
+                fi: Lines.getFi({ t: tR, h }), // Should be 100 %
                 errors,
                 parentPoint: this
               });
@@ -141,7 +141,7 @@ class TDPoint {
                 fn2: () => newT,
               });
               const newH = commonPoint.h;
-              const newFi = Formulas.getFi0({ t: newT, h: newH });
+              const newFi = Lines.getFi({ t: newT, h: newH });
 
               newPoint = new TDPoint({ t: newT, fi: newFi, errors, parentPoint: newPoint0 });
               newPoint.processResult = this.getProcessResultObj({ startPoint: newPoint0, endPoint: newPoint });
@@ -176,7 +176,7 @@ class TDPoint {
           // [ ] 3.1 Известна заданная конечная температура
           // finalParams.t isRequired
           const newT = finalParams.t;
-          const newFi = Formulas.getFi0({
+          const newFi = Lines.getFi({
             t: newT,
             h: linear({ x: newT, x1: this.t, y1: this.fi, x2: tWB, y2: 100 })
           });
@@ -261,15 +261,15 @@ class TDPoint {
 
     return Formulas.getEnthalpyByParams0({ t, fi });
   }
-  getTR() {
+  getDPT() {
     const { t, fi } = this;
 
-    return Formulas.getTR0({ t, fi });
+    return Lines.getDPT({ t, fi });
   }
   getWBT() {
     const { t, fi } = this;
 
-    return Formulas.getWBT({ t, fi });
+    return Lines.getWBT({ t, fi });
   }
 
   // ADDITIONAL METHODS

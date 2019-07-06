@@ -10,9 +10,9 @@
 Неприменимо, т.к. при тестировании выявлена высокая погрешность, если использовать зависимости, полученные методом наименьших квадратов.
 - [x] `Lines.getEnthalpyLine` by `({ t, fi })`. Линия постоянной энтальпии (см. пункт 3).
 - [x] `Formulas.getEnthalpyByParams0` by `({ t, fi })`
-- [x] `Formulas.getWBT` by `({ t, fi })`. Температура мокрого термометра по графику
-- [x] `Formulas.getTR0` by `({ t, fi })`. Точка росы по графику (более точный вариант - high accuracy)
-- [x] `Formulas.getTR1` by `({ t, fi })`. Точка росы по упрощенной формуле (low accuracy)
+- [x] `Lines.getWBT` by `({ t, fi })`. Температура мокрого термометра по графику
+- [x] `Lines.getTR1` by `({ t, fi })`. Точка росы по графику (high accuracy)
+- [x] `Formulas.getDPT` by `({ t, fi })`. Точка росы по упрощенной формуле (low accuracy)
 
 ## TODO: STEP 2. Wet Bulb Temperature.
 
@@ -91,15 +91,15 @@ const lineFi100 = Lines.getBrokenLineByPoints(pointsFi100); // Like h => val
 // 2) Найти пересечение кривой насыщения (5.1) с линией (3.1) постоянной энтальпии
 
 // Поиск температуры мокрого термометра по графику
-const tWB = Formulas.getWBT({ t, fi });
+const tWB = Lines.getWBT({ t, fi });
 // 19.051343647195182 // C
 
 // Точка росы по графику (более точный вариант, чем следующий)
-const tR0 = Formulas.getTR0({ t, fi });
+const tR0 = Lines.getDPT({ t, fi });
 // 14.266000848002328 // C
 
 // Точка росы (упрощенная формула - не рекомендуется)
-const tR1 = Formulas.getTR1({ t, fi });
+const tR1 = Formulas.getDPT({ t, fi });
 // 16.6 // C
 ```
 _To be continued..._

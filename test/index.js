@@ -231,38 +231,38 @@ describe('Awesome test.', () => {
 
   // Пересечение прямой постоянной энтальпии для заданной точки с ломанной
   // кривой насыщения fi=100%
-  it('4.4.1. Points.getWBT t= 16; fi= 50', () => {
+  it('4.4.1. Lines.getWBT t= 16; fi= 50', () => {
     const t = 16;
     const fi = 50;
     const expectedVal = 10.484320675266424;
-    const testedVal = Formulas.getWBT({ t, fi });
+    const testedVal = Lines.getWBT({ t, fi });
 
     assert(expectedVal === testedVal, `FuckUp :( testedVal is ${testedVal}; Should be ${expectedVal}`);
   });
 
-  it('4.4.2. WET BULB TEMPERATURE Points.getWBT for Moscow: t= 28; fi= 43', () => {
+  it('4.4.2. WET BULB TEMPERATURE Lines.getWBT for Moscow: t= 28; fi= 43', () => {
     const t = 28;
     const fi = 43;
     const expectedVal = 19.030956508469423;
-    const testedVal = Formulas.getWBT({ t, fi });
+    const testedVal = Lines.getWBT({ t, fi });
 
     assert(expectedVal === testedVal, `FuckUp :( testedVal is ${testedVal}; Should be ${expectedVal}`);
   });
 
-  it('4.4.3. Formulas.getTR0 Moscow: t= 28; fi= 43', () => {
+  it('4.4.3. Lines.getDPT Moscow: t= 28; fi= 43', () => {
     const t = 28;
     const fi = 43;
     const expectedVal = 14.266000848002328; // Should be 14.2; https://planetcalc.ru/248/
-    const testedVal = Formulas.getTR0({ t, fi });
+    const testedVal = Lines.getDPT({ t, fi });
 
     assert(expectedVal === testedVal, `FuckUp :( testedVal is ${testedVal}; Should be ${expectedVal}`);
   });
 
-  it('4.4.4. Formulas.getTR1 Moscow: t= 28; fi= 43', () => {
+  it('4.4.4. Formulas.getDPT Moscow: t= 28; fi= 43', () => {
     const t = 28;
     const fi = 43;
     const expectedVal = 16.6; // Should be 14.2; https://planetcalc.ru/248/
-    const testedVal = Formulas.getTR1({ t, fi });
+    const testedVal = Formulas.getDPT({ t, fi });
 
     assert(expectedVal === testedVal, `FuckUp :( testedVal is ${testedVal}; Should be ${expectedVal}`);
   });
@@ -323,10 +323,10 @@ describe('Awesome test.', () => {
     assert(testedEnthalpy === expectedEnthalpy, `FUCKUP: testedEnthalpy is ${testedEnthalpy}`)
   });
 
-  it('6.4 TDPoint.getTR()', () => {
+  it('6.4 TDPoint.getDPT()', () => {
     const point = new TDPoint({ t: 28, fi: 43 });
     const expectedTR = 14.266000848002328;
-    const testedTR = point.getTR();
+    const testedTR = point.getDPT();
 
     assert(testedTR === expectedTR, `FUCKUP: testedTR is ${testedTR}`)
   });
