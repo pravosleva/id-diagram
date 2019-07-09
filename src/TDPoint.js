@@ -117,9 +117,6 @@ class TDPoint {
                 parentPoint: this
               });
               newPoint.processResult = this.getProcessResultObj({ endPoint: newPoint });
-              // Вычисляется аналитически с
-              // погрешностью, поэтому обнуляем принудительно
-              newPoint.processResult.DELTA_H = 0;
             } else {
               // [ ] 2.2. Нужно вычислить скрытую теплоту на конденсацию
               // TODO: Should be tested!
@@ -132,7 +129,6 @@ class TDPoint {
               });
 
               newPoint0.processResult = this.getProcessResultObj({ endPoint: newPoint0 });
-              newPoint0.processResult.DELTA_H = 0;
 
               // [x] 2.2.2 После насыщения
               // Ищем пересечение заданной конечной t с кривой насыщения
@@ -278,16 +274,14 @@ class TDPoint {
       return { // Я подумал, в верхнем регистре будет уместно...
         DELTA_H: endPoint.getHumidity() - startPoint.getHumidity(),
         DELTA_E: endPoint.getEnthalpy() - startPoint.getEnthalpy(),
-        DELTA_FI: endPoint.get('fi') - startPoint.get('fi'),
-        // TODO: Скрытая теплота...
+        DELTA_FI: endPoint.get('fi') - startPoint.get('fi')
       };
     }
 
-    return { // Я подумал, в верхнем регистре будет уместно...
+    return {
       DELTA_H: endPoint.getHumidity() - this.getHumidity(),
       DELTA_E: endPoint.getEnthalpy() - this.getEnthalpy(),
-      DELTA_FI: endPoint.get('fi') - this.get('fi'),
-      // TODO: Скрытая теплота...
+      DELTA_FI: endPoint.get('fi') - this.get('fi')
     };
   }
 

@@ -1,4 +1,4 @@
-/* eslint-disable arrow-parens, padded-blocks, space-before-blocks, max-len, no-mixed-operators, no-shadow, object-curly-newline, no-plusplus */
+/* eslint-disable prefer-destructuring, arrow-parens, padded-blocks, space-before-blocks, max-len, no-mixed-operators, no-shadow, object-curly-newline, no-plusplus */
 import {
   // byLeastSquaresApproximation,
   by2Points,
@@ -71,24 +71,87 @@ export default class Lines {
   // RELATIVITY, %
   /* eslint-disable object-property-newline */
   static getFi({ t, h }) {
-    const lineFi100 = Lines.getBrokenLineByPoints(fiPoints['100']);
-    const lineFi10 = Lines.getBrokenLineByPoints(fiPoints['10']);
-    const t1 = lineFi100(h);
-    const t2 = lineFi10(h);
-    const result = linear({
-      x: t, x1: t2, y1: 10, x2: t1, y2: 100
-    });
+    // v0 - Bad way
+    // const lineFi100 = Lines.getBrokenLineByPoints(fiPoints['100']);
+    // const lineFi10 = Lines.getBrokenLineByPoints(fiPoints['10']);
+    // const t1 = lineFi100(h);
+    // const t2 = lineFi10(h);
+    // const result = linear({
+    //   x: t, x1: t2, y1: 10, x2: t1, y2: 100
+    // });
+
+    // v1
+    const pointsArrs = Formulas.getHumidityPoints(); // [[{ x, y }]]
+    const tValuesToCompare = [];
+    const fiValuesTemplate = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100];
+    const fiLines = [];
+
+    for (let i = 0; i < fiValuesTemplate.length; i++) {
+      fiLines.push(Lines.getBrokenLineByPoints(pointsArrs[i]));
+    }
+
+    // Имеется список функций для fi= 10..100 % (сверху вниз)
+    for (let i = 0; i < fiLines.length; i++) {
+      tValuesToCompare.push(fiLines[i](h));
+    }
+
+    /* EXAMPLE OF tValuesToCompare
+    [ 62.272266706643805,
+      41.870566869188515,
+      34.32383345598339,
+      29.242639418003144,
+      25.429476253125923,
+      22.39615251002335,
+      19.89011367525035,
+      17.75266155812377,
+      15.901828040329711,
+      14.2634537585738 ]
+    */
+
+    // Имеется массив значений t среди которых будем искать попадание в интервал
+    let x1;
+    let x2;
+    let y1;
+    let y2;
+
+    if (t >= tValuesToCompare[0]) {
+      // Точка в верху диаграммы
+      x1 = tValuesToCompare[0];
+      x2 = tValuesToCompare[1];
+      y1 = fiValuesTemplate[0];
+      y2 = fiValuesTemplate[1];
+    } else if (t <= tValuesToCompare[tValuesToCompare.length - 1]) {
+      // Точка в зоне перенасыщения: Предпоследний интервал внизу диаграммы
+      x1 = tValuesToCompare[tValuesToCompare.length - 1];
+      x2 = tValuesToCompare[tValuesToCompare.length - 2];
+      y1 = fiValuesTemplate[tValuesToCompare.length - 1];
+      y2 = fiValuesTemplate[tValuesToCompare.length - 2];
+    } else {
+      for (let i = 0; i < tValuesToCompare.length; i++) {
+        if (t <= tValuesToCompare[i] && t >= tValuesToCompare[i + 1]) {
+          x1 = tValuesToCompare[i];
+          x2 = tValuesToCompare[i + 1];
+          y1 = fiValuesTemplate[i];
+          y2 = fiValuesTemplate[i + 1];
+          break;
+        }
+      }
+    }
+
+    const result = linear({ x: t, x1, y1, x2, y2 });
+
+    // console.log(x1, y1, x2, y2); Ok.
 
     return result;
   }
 
   // ВЛАГОСОДЕРЖАНИЕ: МАССИВ ФУНКЦИЙ В АНАЛИТИЧЕСКОМ ВИДЕ
-  // HUMIDITY: ANALYTIC MATH FNS ARRAY
+  // HUMIDITY: ANALYTIC MATH FNS ARRAY (DEPRECATED)
   static _getHumidityLines() {
     const coeffsArr = [];
     const pointsArrs = [];
     const temperatureTemplateArr = [-41, 0, 41];
-    const fiValues = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+    const fiValues = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100];
 
     for (let i = 0; i < fiValues.length; i++) {
       pointsArrs[i] = [];
@@ -104,31 +167,6 @@ export default class Lines {
     pointsArrs.map(points => coeffsArr.push(by3Points(points)));
 
     return coeffsArr.map(({ a, b, c }) => h => (a * (h ** 2)) + (b * h) + c);
-  }
-
-  static getHumidityPoints() {
-    const pointsArrs = [];
-    const temperatureTemplateArr = [
-      -41, -40, -39, -38, -37, -36, -35, -34, -33, -32, -31, -30, -29, -28,
-      -27, -26, -25, -24, -23, -22, -21, -20, -19, -18, -17, -16, -15, -14, -13,
-      -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7,
-      8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
-      27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41
-    ];
-    const fiValues = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
-
-    for (let i = 0; i < fiValues.length; i++) {
-      pointsArrs[i] = [];
-
-      for (let j = 0; j < temperatureTemplateArr.length; j++) {
-        pointsArrs[i].push({
-          x: Formulas.getHumidityByParams0({ t: temperatureTemplateArr[j], fi: fiValues[i] }),
-          y: temperatureTemplateArr[j]
-        });
-      }
-    }
-
-    return pointsArrs;
   }
 
   // ЭНТАЛЬПИЯ: МАССИВ ФУНКЦИЙ В АНАЛИТИЧЕСКОМ ВИДЕ

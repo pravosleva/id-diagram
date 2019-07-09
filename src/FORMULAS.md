@@ -12,3 +12,5 @@ Method | Arguments | Description
 `Formulas.getTemperatureByParams0` | | _C, (number)_
 | | `e` | enthalpy, kJ/kg
 | | `h` | humidity, g/kg dry air
+`Formulas.getHumidityPoints` | | _[[{ x, y }]]_
+| | - | -

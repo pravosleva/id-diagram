@@ -40,7 +40,7 @@ const tR1 = pointB1.getDPT(); // C
 
 ### Вычисление термодинамических процессов.
 ![Processes](./img/id-diagram-B1-B5-484x400.png)
-- [x] HEATING // Изобарный нагрев / Isobaric heating; h= const;
+- [ ] HEATING (Should be tested) _h= const_
 ```javascript
 const pointB2 = pointB1.process({
   type: 'heating',
@@ -49,12 +49,12 @@ const pointB2 = pointB1.process({
 const finalFi = pointB2.get('fi');
 
 console.log(finalFi);
-// 37.592996573271044 // %
+// 14.303548169006595 // %
 
 console.log(pointB2.processResult);
-// { DELTA_H: 19.701903411072525,
-//   DELTA_E: 75.81706462959397,
-//   DELTA_FI: -5.407003426728956 }
+// { DELTA_H: 0.8795309509888156, // Погрешность все еще есть
+//   DELTA_E: 25.407626019937837,
+//   DELTA_FI: -28.696451830993404 }
 
 // And also, we have access to parent point:
 console.log(pointB2.parentPoint.get('t'));
@@ -75,18 +75,18 @@ const e3 = pointB3.getEnthalpy();
 const resultB1B3 = pointB3.processResult;
 
 console.log(t3); // 25 // С
-console.log(fi3); // 81.25379924559114 // %
-console.log(h3); // 16.228267828216858 // g/kg
-console.log(e3); // 66.12402576390821 // kJ/kg
+console.log(fi3); // 51.307066576678906 // %
+console.log(h3); // 10.149613772703198 // g/kg
+console.log(e3); // 50.79081480354759 // kJ/kg
 console.log(resultB1B3);
-// { DELTA_H: 0
-//   DELTA_E: 12.17116345682976,
-//   DELTA_FI: 38.25379924559114 }
+// { DELTA_H: -0.0014688013943775502,
+//   DELTA_E: -3.1620475035308573,
+//   DELTA_FI: 8.307066576678906 }
 
 // CASE 2: С конденсацией
 const pointB5 = pointB1.process({
   type: 'cooling',
-  finalParams: { t: 20 }
+  finalParams: { t: 10 }
 });
 
 const t5 = pointB5.get('t');
@@ -95,16 +95,18 @@ const h5 = pointB5.getHumidity();
 const e5 = pointB5.getEnthalpy();
 const resultB1B5 = pointB5.processResult;
 
-console.log(t5); // 20 // С
-console.log(fi5); // 89.98595978005515 // %
-console.log(h5); // 13.19970111553801 // g/kg
-console.log(e5); // 53.127078563979126 // kJ/kg
+console.log(t5); // 10 // С
+console.log(fi5); // 100.03540745962107 // %
+console.log(h5); // 7.630926160310488 // g/kg
+console.log(e5); // 28.866936028559984 // kJ/kg
 console.log(resultB1B5);
-// { DELTA_H: 3.048618541440435,
-//   DELTA_E: -0.825783743099322,
-//   DELTA_FI: 46.985959780055154 }
+// Разница относительно предпоследнего процесса (прохождения через температуру
+// точки росы):
+// { DELTA_H: -2.516293286721109,
+//   DELTA_E: -10.617290172969213,
+//   DELTA_FI: 0.051985222719508783 }
 ```
-- [ ] ADIABATIC (Should be tested) // e= const
+- [ ] ADIABATIC (Should be tested) _e= const_
 ```javascript
 const point2a = pointB1.process({
   type: 'adiabatic',

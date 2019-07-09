@@ -9,3 +9,6 @@ Method | Arguments | Description
 `Lines.getWBT` | | Wet Bulb Temperature, _C (number)_
 | | `t` | temperature, C
 | | `fi` | relativities, %
+`Lines.getFi` | | Relativity, _% (number)_
+| | `t` | temperature, C
+| | `h` | humidity, g/kg

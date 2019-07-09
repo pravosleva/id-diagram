@@ -309,7 +309,7 @@ describe('Awesome test.', () => {
       }
     });
     // const tAfter = testedHeatingProcess.get('t');
-    const expectedFiAfter = 37.592996573271044;
+    const expectedFiAfter = 14.303548169006595;
     const testedFiAfter = testedHeatingProcess.get('fi');
 
     assert(testedFiAfter === expectedFiAfter, `FUCKUP: testedFiAfter is ${testedFiAfter}`)
@@ -347,7 +347,7 @@ describe('Awesome test.', () => {
         t: 50
       }
     });
-    const expectedDeltaH = 19.701903411072525;
+    const expectedDeltaH = 0.8795309509888156;
     const testedDeltaH = afterHeating.processResult.DELTA_H;
 
     assert(testedDeltaH === expectedDeltaH, `FUCKUP: testedDeltaH is ${testedDeltaH}`)
@@ -361,7 +361,7 @@ describe('Awesome test.', () => {
         t: 50
       }
     });
-    const expectedDeltaFi = -5.407003426728956;
+    const expectedDeltaFi = -28.696451830993404;
     const testedDeltaFi = afterHeating.processResult.DELTA_FI;
 
     assert(testedDeltaFi === expectedDeltaFi, `FUCKUP: testedDeltaFi is ${testedDeltaFi}`)
@@ -371,22 +371,25 @@ describe('Awesome test.', () => {
     const point = new TDPoint({ t: 28, fi: 43 });
     const afterCooling = point.process({
       type: 'cooling',
-      finalParams: { t: 20 }
+      finalParams: { t: 10 }
     });
-    const expectedH = 13.19970111553801;
+    const expectedH = 7.630926160310488;
     const testedH = afterCooling.getHumidity();
 
-    // Пройденная точка росы:
-    // console.log(afterCooling.parentPoint.get('t')); // Ok!
-
-    // Конечная влажность:
+    // console.log('h end');
+    // console.log(testedH);
+    //
+    // console.log('e end');
+    // console.log(afterCooling.getEnthalpy());
+    //
+    // console.log('fi end');
     // console.log(afterCooling.get('fi'));
-
-    // Конечная t:
+    //
+    // console.log('t end');
     // console.log(afterCooling.get('t'));
 
     // Результат последнего процесса:
-    // console.log(afterCooling.processResult); // Ok!
+    // console.log(afterCooling.processResult);
 
     assert(testedH === expectedH, `FUCKUP: testedH is ${testedH}`)
   });
