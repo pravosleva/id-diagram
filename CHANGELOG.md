@@ -16,3 +16,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 - New `Lines.getFi({ t, h })` method (Уменьшена погрешность определения относительной влажности)
 - Увеличено количество точек для `Formulas.getHumidityPoints()`
+
+## 3.0.4
+
+- [x] Process type `heating` tested
+- [x] Process type `cooling` tested
+- [ ] Process type `adiabatic` NOT COMPLETED!

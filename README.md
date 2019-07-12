@@ -38,21 +38,27 @@ const tR1 = pointB1.getDPT(); // C
 
 > If `point.get('errors').length > 0` then this point is wrong. Check this.
 
-### Вычисление термодинамических процессов.
+### Вычисление термодинамических процессов (EXPERIMENTAL)
 ![Processes](./img/id-diagram-B1-B5-484x400.png)
-- [ ] HEATING (Should be tested) _h= const_
+- [x] **HEATING** _h= const_
 ```javascript
+// Проверено по диаграмме (есть погрешность по влагосодержанию)
 const pointB2 = pointB1.process({
   type: 'heating',
   finalParams: { t: 50 }
 });
-const finalFi = pointB2.get('fi');
 
-console.log(finalFi);
+console.log(pointB2.get('fi'));
 // 14.303548169006595 // %
 
+console.log(pointB2.getHumidity());
+// 11.030613525086391 // g/kg
+
+console.log(pointB2.getEnthalpy());
+// 79.36048832701628 // kJ/kg
+
 console.log(pointB2.processResult);
-// { DELTA_H: 0.8795309509888156, // Погрешность все еще есть
+// { DELTA_H: 0.8795309509888156, WTF?
 //   DELTA_E: 25.407626019937837,
 //   DELTA_FI: -28.696451830993404 }
 
@@ -60,9 +66,11 @@ console.log(pointB2.processResult);
 console.log(pointB2.parentPoint.get('t'));
 // 28 // C
 ```
-- [ ] COOLING (Should be tested)
+- [x] **COOLING**
 ```javascript
-// CASE 1: Без конденсации
+// ---
+// CASE 1: Без конденсации (проверено по диаграмме)
+// ---
 const pointB3 = pointB1.process({
   type: 'cooling',
   finalParams: { t: 25 }
@@ -83,7 +91,9 @@ console.log(resultB1B3);
 //   DELTA_E: -3.1620475035308573,
 //   DELTA_FI: 8.307066576678906 }
 
-// CASE 2: С конденсацией
+// ---
+// CASE 2: С конденсацией (проверено по диаграмме)
+// ---
 const pointB5 = pointB1.process({
   type: 'cooling',
   finalParams: { t: 10 }
@@ -106,33 +116,109 @@ console.log(resultB1B5);
 //   DELTA_E: -10.617290172969213,
 //   DELTA_FI: 0.051985222719508783 }
 ```
-- [ ] ADIABATIC (Should be tested) _e= const_
+- [ ] **ADIABATIC** (NOT COMPLETED!) _e= const_
 ```javascript
-const point2a = pointB1.process({
-  type: 'adiabatic',
-  finalParams: { t: 22 }
-});
+// ---
+// CASE 1: Известна конечная температура
+// ---
+// [x] 1.1: Конечная температура ниже, чем tWB.
 // Кстати, уменьшение температуры по линии энтальпии не может быть ниже
 // температуры мокрого термометра - будет возвращена точка tWB, соответствующая
 // минимально возможной температуре при изоэнтальпийном процессе.
-const finalFi2a = point2a.get('fi');
+// Результаты проверены по диаграмме.
+const pointB6 = pointB1.process({
+  type: 'adiabatic',
+  finalParams: { t: 10 }
+});
 
-console.log(finalFi2a);
-// TODO: Should be tested.
+console.log(pointB6.get('t'));
+// 19.030956508469423 // C
 
-console.log(point2a.processResult);
-// TODO: Should be tested.
+console.log(pointB6.get('fi'));
+// 100 // %
 
-const point2b = pointB1.process({
+console.log(pointB6.getHumidity());
+// 13.82407829328307 // g/kg
+
+console.log(pointB6.getEnthalpy());
+// 53.66738700175793 // kJ/kg
+
+console.log(pointB6.processResult);
+// { DELTA_H: 3.6729957191854954,
+//   DELTA_E: -0.28547530532051724,
+//   DELTA_FI: 57 }
+
+// [ ] FAILED! 1.2: Конечная температура выше исходной.
+const pointB7 = pointB1.process({
+  type: 'adiabatic',
+  finalParams: { t: 40 }
+});
+
+console.log(pointB7.get('t'));
+// 40 // C
+
+console.log(pointB7.get('fi'));
+// 21.0247699557539 // %
+
+console.log(pointB7.getHumidity());
+// 9.677198625202468 // g/kg
+
+console.log(pointB7.getEnthalpy());
+// 65.39190185806618 // kJ/kg
+
+console.log(pointB7.processResult);
+// { DELTA_H: -0.4738839488951072,
+//   DELTA_E: 11.43903955098773,
+//   DELTA_FI: -21.9752300442461 }
+
+// ---
+// CASE 2: Известна конечная влажность
+// ---
+// [x] 2.1: Влажность ниже исходной (есть погрешность)
+const pointB8 = pointB1.process({
   type: 'adiabatic',
   finalParams: { fi: 85 }
 });
 
-console.log(finalFi2b);
-// TODO: Should be tested.
+console.log(pointB8.get('t'));
+// 21.391231111503785 // C
 
-console.log(point2b.processResult);
-// TODO: Should be tested.
+console.log(pointB8.get('fi'));
+// 85 // %
+
+console.log(pointB8.getHumidity());
+// 13.593025403474082 // g/kg
+
+console.log(pointB8.getEnthalpy());
+// 55.59186936444388 // kJ/kg (WTF? 54 по диаграмме)
+
+console.log(pointB8.processResult);
+// { DELTA_H: 3.441942829376506,
+//   DELTA_E: 1.6390070573654327,
+//   DELTA_FI: 42 }
+
+// [ ] FAILED! 2.2: Влажность выше исходной
+const pointB9 = pointB1.process({
+  type: 'adiabatic',
+  finalParams: { fi: 25 }
+});
+
+console.log(pointB9.get('t'));
+// 30.832329523641235 // C
+
+console.log(pointB9.get('fi'));
+// 25 // %
+
+console.log(pointB9.getHumidity());
+// 6.912574036124484 // g/kg
+
+console.log(pointB9.getEnthalpy());
+// 48.89727121058972 // kJ/kg
+
+console.log(pointB9.processResult);
+// { DELTA_H: -3.2385085379730914,
+//   DELTA_E: -5.055591096488726,
+//   DELTA_FI: -18 }
 ```
 - [ ] _Others_
 

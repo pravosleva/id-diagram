@@ -177,7 +177,7 @@ class TDPoint {
             h: linear({ x: newT, x1: this.t, y1: this.fi, x2: tWB, y2: 100 })
           });
 
-          if (tWB <= finalParams.t) {
+          if (newT >= tWB) {
             // [x] 3.1.1 Если newT >= tWB мокрого термометра, найдем нужную точку
             newPoint = new TDPoint({
               t: newT,
@@ -194,7 +194,7 @@ class TDPoint {
             result = newPoint;
           }
         } else if (finalParams && finalParams.fi) {
-          // [ ] 3.2 Известна заданная конечная влажность
+          // [x] 3.2 Известна заданная конечная влажность
           // finalParams.fi isRequired
           const newFi = finalParams.fi;
 
@@ -202,7 +202,7 @@ class TDPoint {
             errors.push('FUCKUP: Зачем указывать влажность менее 0?');
             result = new TDPoint({ t: this.t, fi: this.fi, errors, parentPoint: this });
           } else if (newFi <= 100 && newFi > 0) {
-            // [ ] 3.2.1 Если конечная влажность <= 100 %, найдем нужную точку
+            // [x] 3.2.1 Если конечная влажность <= 100 %, найдем нужную точку
             const newT = linear({ x: finalParams.fi, x1: this.fi, y1: this.t, x2: 100, y2: tWB });
 
             newPoint = new TDPoint({ t: newT, fi: newFi, errors, parentPoint: this });
