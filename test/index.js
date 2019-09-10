@@ -308,24 +308,9 @@ describe('Awesome test.', () => {
         t: 50
       }
     });
-    // const tAfter = testedHeatingProcess.get('t');
     const expectedFiAfter = 14.303548169006595;
     const testedFiAfter = pointB2.get('fi');
-    /*
-    console.log('h end');
-    console.log(pointB2.getHumidity());
 
-    console.log('e end');
-    console.log(pointB2.getEnthalpy());
-
-    console.log('fi end');
-    console.log(pointB2.get('fi'));
-
-    console.log('t end');
-    console.log(pointB2.get('t'));
-
-    console.log(pointB2.processResult);
-    */
     assert(testedFiAfter === expectedFiAfter, `FUCKUP: testedFiAfter is ${testedFiAfter}`)
   });
 
@@ -390,21 +375,6 @@ describe('Awesome test.', () => {
     const expectedH = 7.630926160310488;
     const testedH = afterCooling.getHumidity();
 
-    // console.log('h end');
-    // console.log(testedH);
-    //
-    // console.log('e end');
-    // console.log(afterCooling.getEnthalpy());
-    //
-    // console.log('fi end');
-    // console.log(afterCooling.get('fi'));
-    //
-    // console.log('t end');
-    // console.log(afterCooling.get('t'));
-
-    // Результат последнего процесса:
-    // console.log(afterCooling.processResult);
-
     assert(testedH === expectedH, `FUCKUP: testedH is ${testedH}`)
   });
 
@@ -416,22 +386,7 @@ describe('Awesome test.', () => {
     });
     const expectedTB6 = 19.030956508469423;
     const testedTB6 = pointB6.get('t');
-    /*
-    console.log('h end');
-    console.log(pointB6.getHumidity());
 
-    console.log('e end');
-    console.log(pointB6.getEnthalpy());
-
-    console.log('fi end');
-    console.log(pointB6.get('fi'));
-
-    console.log('t end');
-    console.log(pointB6.get('t'));
-
-    // Результат последнего процесса:
-    console.log(pointB6.processResult);
-    */
     assert(testedTB6 === expectedTB6, `FUCKUP: tested tB6 is ${testedTB6}`)
   });
 
@@ -443,22 +398,7 @@ describe('Awesome test.', () => {
     });
     const expectedTB7 = 40;
     const testedTB7 = pointB7.get('t');
-    /*
-    console.log('h end');
-    console.log(pointB7.getHumidity());
 
-    console.log('e end');
-    console.log(pointB7.getEnthalpy());
-
-    console.log('fi end');
-    console.log(pointB7.get('fi'));
-
-    console.log('t end');
-    console.log(pointB7.get('t'));
-
-    // Результат последнего процесса:
-    console.log(pointB7.processResult);
-    */
     assert(testedTB7 === expectedTB7, `FUCKUP: tested tB7 is ${testedTB7}`)
   });
 
@@ -470,22 +410,7 @@ describe('Awesome test.', () => {
     });
     const expectedTB8 = 21.391231111503785;
     const testedTB8 = pointB8.get('t');
-    /*
-    console.log('h end');
-    console.log(pointB8.getHumidity());
 
-    console.log('e end');
-    console.log(pointB8.getEnthalpy());
-
-    console.log('fi end');
-    console.log(pointB8.get('fi'));
-
-    console.log('t end');
-    console.log(pointB8.get('t'));
-
-    // Результат последнего процесса:
-    console.log(pointB8.processResult);
-    */
     assert(testedTB8 === expectedTB8, `FUCKUP: tested tB8 is ${testedTB8}`)
   });
 

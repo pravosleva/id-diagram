@@ -33,13 +33,13 @@ export default class Lines {
     fi // %
   }){
     const enthalpyLine = Lines.getConstEnthalpyLine({ t, fi });
-    // console.log(enthalpyLine(5.6)); // Ok!
-    // console.log(`t= ${t} / fi= ${fi} / e= ${enthalpyLine(5)}`);
 
     // v0
     // const pointsFi100 = Points.getHumidityPoints()[9];
+
     // v1
     // const pointsFi100 = Points.getFi100Points();
+
     // v2
     // const pointsFi100 = [];
     // const temperatureTemplateArr = [
@@ -54,6 +54,7 @@ export default class Lines {
     //
     //   return false;
     // });
+
     // v3: http://helpeng.ru/programs/properties_dump_air.php
     const pointsFi100 = fiPoints['100'];
 
@@ -61,8 +62,6 @@ export default class Lines {
       fn1: enthalpyLine,
       fn2: Lines.getBrokenLineByPoints(pointsFi100)
     });
-
-    // console.log(point); // Ok.
 
     return point.t;
   }
@@ -139,8 +138,6 @@ export default class Lines {
     }
 
     const result = linear({ x: t, x1, y1, x2, y2 });
-
-    // console.log(x1, y1, x2, y2); Ok.
 
     return result;
   }
@@ -236,8 +233,6 @@ export default class Lines {
   // ENTHALPY: LINE FOR THE { t, fi }
   static getConstEnthalpyLine({ t, fi }) {
     const d = Formulas.getHumidityByParams0({ t, fi });
-
-    // console.log(d); // Ok!
 
     // Берем произвольную линию для вычисления k
     const enthalpyLine = Lines.getEnthalpyLines()[10];

@@ -103,13 +103,14 @@ const t5 = pointB5.get('t');
 const fi5 = pointB5.get('fi');
 const h5 = pointB5.getHumidity();
 const e5 = pointB5.getEnthalpy();
-const resultB1B5 = pointB5.processResult;
+const resultB4B5 = pointB5.processResult;
+const resultB1B4 = resultB4B5.processResult;
 
 console.log(t5); // 10 // С
 console.log(fi5); // 100.03540745962107 // %
 console.log(h5); // 7.630926160310488 // g/kg
 console.log(e5); // 28.866936028559984 // kJ/kg
-console.log(resultB1B5);
+console.log(resultB4B5);
 // Разница относительно предпоследнего процесса (прохождения через температуру
 // точки росы):
 // { DELTA_H: -2.516293286721109,
