@@ -27,16 +27,16 @@ const tR1 = pointB1.getDPT(); // C
 ## Road Map
 
 ### Параметры точки
-> Точка росы и температура мокрого термометра определяются по линиям
 
-- [x] `pointB1.get('t')`
-- [x] `pointB1.get('fi')`
+- [x] `pointB1.get('t')` _Температура точки / Point temperature, C_
+- [x] `pointB1.get('fi')` _Относительная влажность точки / Relativity, %_
 - [x] `pointB1.getHumidity()` _Влагосодержание / Humidity, g/kg dry air_
 - [x] `pointB1.getEnthalpy()` _Энтальпия / Enthalpy, kJ/kg_
 - [x] `pointB1.getDPT()` _Точка росы / Dew Point Temperature, C_
 - [x] `pointB1.getWBT()` _Температура мокрого термометра / Wet Bulb Temperature, C_
 
-> If `point.get('errors').length > 0` then this point is wrong. Check this.
+> Если `point.hasErrors()`, значит что-то пошло не так. -> You can get errors by `point.getErrors()` as Array.  
+> Точка росы и температура мокрого термометра определяются по линиям.
 
 ### Вычисление термодинамических процессов (EXPERIMENTAL)
 ![Processes](./img/id-diagram-B1-B5-484x400.png)

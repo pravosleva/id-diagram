@@ -53,7 +53,7 @@ export default class Formulas {
   }){
     // const temp = Lines.getConstEnthalpyLine({ t, fi });
     const enthalpyLines = Lines.getEnthalpyLines(); // first -18, last 88 (kJ/kg)
-    const h = Formulas.getHumidityByParams0({ t, fi });
+    const h = this.getHumidityByParams0({ t, fi });
 
     const y1 = -18;
     const x1 = enthalpyLines[0](h);
@@ -64,6 +64,7 @@ export default class Formulas {
     return linear({ x, x1, y1, x2, y2 });
   }
 
+  // DEPREATED!
   // ТЕМПЕРАТУРА ТОЧКИ РОСЫ (Упрощенная формула), С
   // tR POINT TEMPERATURE (Simplest way), C
   static getDPT({
@@ -92,7 +93,7 @@ export default class Formulas {
 
       for (let j = 0; j < temperatureTemplateArr.length; j++) {
         pointsArrs[i].push({
-          x: Formulas.getHumidityByParams0({ t: temperatureTemplateArr[j], fi: fiValues[i] }),
+          x: this.getHumidityByParams0({ t: temperatureTemplateArr[j], fi: fiValues[i] }),
           y: temperatureTemplateArr[j]
         });
       }

@@ -258,14 +258,15 @@ describe('Awesome test.', () => {
     assert(expectedVal === testedVal, `FuckUp :( testedVal is ${testedVal}; Should be ${expectedVal}`);
   });
 
-  it('4.4.4. Formulas.getDPT Moscow: t= 28; fi= 43', () => {
-    const t = 28;
-    const fi = 43;
-    const expectedVal = 16.6; // Should be 14.2; https://planetcalc.ru/248/
-    const testedVal = Formulas.getDPT({ t, fi });
-
-    assert(expectedVal === testedVal, `FuckUp :( testedVal is ${testedVal}; Should be ${expectedVal}`);
-  });
+  // DEPRECATED!
+  // it('4.4.4. Formulas.getDPT Moscow: t= 28; fi= 43', () => {
+  //   const t = 28;
+  //   const fi = 43;
+  //   const expectedVal = 16.6; // Should be 14.2; https://planetcalc.ru/248/
+  //   const testedVal = Formulas.getDPT({ t, fi });
+  //
+  //   assert(expectedVal === testedVal, `FuckUp :( testedVal is ${testedVal}; Should be ${expectedVal}`);
+  // });
 
   it('5.1 Points.getCommonPoint0', () => {
     const { k: k1, b: b1 } = getKB({ x1: 0, y1: 1, x2: 1, y2: 2 });

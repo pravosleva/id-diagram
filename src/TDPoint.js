@@ -201,7 +201,7 @@ class TDPoint {
           if (newFi < 0) {
             errors.push('FUCKUP: Зачем указывать влажность менее 0?');
             result = new TDPoint({ t: this.t, fi: this.fi, errors, parentPoint: this });
-          } else if (newFi <= 100 && newFi > 0) {
+          } else if (newFi <= 100 && newFi >= 0) {
             // [x] 3.2.1 Если конечная влажность <= 100 %, найдем нужную точку
             const newT = linear({ x: finalParams.fi, x1: this.fi, y1: this.t, x2: 100, y2: tWB });
 
@@ -283,6 +283,14 @@ class TDPoint {
       DELTA_E: endPoint.getEnthalpy() - this.getEnthalpy(),
       DELTA_FI: endPoint.get('fi') - this.get('fi')
     };
+  }
+
+  // ERRORS
+  hasErrors() {
+    return this.errors.length > 0;
+  }
+  getErrors() {
+    return this.errors;
   }
 
   // For testing only

@@ -20,7 +20,7 @@ export default class Lines {
   }){
     const d = Formulas.getHumidityByParams0({ t, fi });
     const pointsFi100 = fiPoints['100'];
-    const fi100Line = Lines.getBrokenLineByPoints(pointsFi100);
+    const fi100Line = this.getBrokenLineByPoints(pointsFi100);
     const tR = fi100Line(d);
 
     return tR;
@@ -32,7 +32,7 @@ export default class Lines {
     t, // C
     fi // %
   }){
-    const enthalpyLine = Lines.getConstEnthalpyLine({ t, fi });
+    const enthalpyLine = this.getConstEnthalpyLine({ t, fi });
 
     // v0
     // const pointsFi100 = Points.getHumidityPoints()[9];
@@ -60,7 +60,7 @@ export default class Lines {
 
     const point = Points.getCommonPoint0({
       fn1: enthalpyLine,
-      fn2: Lines.getBrokenLineByPoints(pointsFi100)
+      fn2: this.getBrokenLineByPoints(pointsFi100)
     });
 
     return point.t;
@@ -71,8 +71,8 @@ export default class Lines {
   /* eslint-disable object-property-newline */
   static getFi({ t, h }) {
     // v0 - Bad way
-    // const lineFi100 = Lines.getBrokenLineByPoints(fiPoints['100']);
-    // const lineFi10 = Lines.getBrokenLineByPoints(fiPoints['10']);
+    // const lineFi100 = this.getBrokenLineByPoints(fiPoints['100']);
+    // const lineFi10 = this.getBrokenLineByPoints(fiPoints['10']);
     // const t1 = lineFi100(h);
     // const t2 = lineFi10(h);
     // const result = linear({
@@ -86,7 +86,7 @@ export default class Lines {
     const fiLines = [];
 
     for (let i = 0; i < fiValuesTemplate.length; i++) {
-      fiLines.push(Lines.getBrokenLineByPoints(pointsArrs[i]));
+      fiLines.push(this.getBrokenLineByPoints(pointsArrs[i]));
     }
 
     // Имеется список функций для fi= 10..100 % (сверху вниз)
@@ -235,7 +235,7 @@ export default class Lines {
     const d = Formulas.getHumidityByParams0({ t, fi });
 
     // Берем произвольную линию для вычисления k
-    const enthalpyLine = Lines.getEnthalpyLines()[10];
+    const enthalpyLine = this.getEnthalpyLines()[10];
     const x1 = 1;
     const x2 = 5;
     const y1 = enthalpyLine(x1);
