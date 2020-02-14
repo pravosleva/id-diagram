@@ -1,6 +1,6 @@
 {
   "name": "id-diagram",
-  "version": "3.0.6",
+  "version": "3.0.8",
   "description": "Wet air HVAC calc. Расчет состояний влажного воздуха.",
   "main": "./lib/index.js",
   "scripts": {
@@ -59,6 +59,6 @@
   },
   "dependencies": {
     "get-parabola": "^1.1.7",
-    "interpolate-by-pravosleva": "^3.0.6"
+    "interpolate-by-pravosleva": "^3.0.8"
   }
 }
